@@ -84,9 +84,15 @@ def pull():
         run("git pull origin master")
 
 @task
+def deploy_static():
+    with cd(project_name):
+        run('env/bin/python manage.py collectstatic -v0 --noinput')
+
+@task
 def deploy():
     pull()
     install_requirements()
+    deploy_static()
     with cd(project_name):
         run("env/bin/python manage.py syncdb")
         run("env/bin/python manage.py migrate")
