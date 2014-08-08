@@ -5,7 +5,7 @@ from fabric.api import *
 #env.hosts = ['ubuntu@10.211.55.6']
 
 path, project_name = os.path.split(os.getcwd())
-git_repo_remote = 'https://github.com/samufuentes/swiss_knife.git'
+git_repo_remote = 'https://github.com/eHealthAfrica/swiss-knife.git'
 
 @task
 def install_dependancies():
