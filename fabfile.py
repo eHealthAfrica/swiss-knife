@@ -12,7 +12,7 @@ def install_dependancies():
     # To avoid password prompt manually add the following to the
     # /etc/sudoers. Use sudo visudo to edit it
     # ubuntu ALL=(ALL) NOPASSWD: ALL
-
+    sudo("apt-get update")
     sudo("apt-get -y install build-essential")
     sudo("apt-get -y install python-dev")
 
@@ -21,8 +21,9 @@ def install_dependancies():
 
     # PostgreSQL
     # To configure follow instructions here: https://help.ubuntu.com/community/PostgreSQL
-    sudo("apt-get -y install libpq-dev")
-    sudo("apt-get -y install postgresql postgresql-contrib")
+    sudo("apt-get -y install libpq-dev libxml2 libxml2-dev")
+    #sudo("apt-get -y install binutils libproj-dev gdal-bin")
+    sudo("apt-get -y install postgresql postgresql-contrib postgresql-server-dev-9.3 postgresql-9.3-postgis-2.1")
     #sudo("apt-get -y install pgadmin3")
 
     sudo("apt-get -y install git-core")
@@ -45,8 +46,9 @@ def configure_server():
     with cd(project_name):
         sudo("cp production_files/uwsgi.conf /etc/init/uwsgi.conf")
         sudo("cp production_files/nginx_example /etc/nginx/sites-available")
-        sudo("rm /etc/nginx/sites-enabled/default")
-        sudo("ln -s /etc/nginx/sites-available/nginx_example /etc/nginx/sites-enabled/nginx_example")
+        with settings(warn_only=True):
+            sudo("rm /etc/nginx/sites-enabled/default")
+            sudo("ln -s /etc/nginx/sites-available/nginx_example /etc/nginx/sites-enabled/nginx_example")
         sudo("cp production_files/celery.conf /etc/init/celery.conf")
 
 @task

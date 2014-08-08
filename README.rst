@@ -9,17 +9,7 @@ Swiss Knife is the toolkit for a driver on the go:
 Installation guide
 ~~~~~~~~~~~~~~~~~~
 
-Fork the repo. Clone it. Install the following packages if you don't have them yet and create a virtual env::
-
-    sudo("apt-get -y install build-essential")
-    sudo("apt-get -y install python-dev")
-
-    sudo("apt-get -y install git-core")
-    sudo("apt-get -y install python-setuptools")
-    sudo("easy_install pip")
-    sudo("pip install virtualenv")
-
-Afterwards::
+Fork the repo. Clone it. Check the packages from the fabfile and install them if you don't have them yet and create a virtual env. Afterwards install PostgresSQL and PostGIS (https://docs.djangoproject.com/en/dev/ref/contrib/gis/install/). Then::
 
     $ pip install -r requirements
     $ python manage.py syncdb
