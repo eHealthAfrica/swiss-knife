@@ -47,6 +47,8 @@ INSTALLED_APPS = (
     # Local
     # Dev
     'django_extensions',
+    # Internal
+    'maps',
 )
 
 MIDDLEWARE_CLASSES = (
