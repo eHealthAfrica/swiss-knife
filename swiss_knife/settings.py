@@ -76,6 +76,7 @@ DATABASES = {
         'PASSWORD': 'postgres',
         'HOST': 'localhost',
         'PORT': '5432',
+    }
 }
 
 # Internationalization
