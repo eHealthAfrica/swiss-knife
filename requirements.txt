@@ -8,5 +8,6 @@ south
 djangorestframework
 markdown
 django-filter
+psycopg2
 # Dev
 django-extensions

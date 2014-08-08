@@ -19,6 +19,12 @@ def install_dependancies():
     sudo("apt-get -y install nginx")
     sudo("apt-get -y install rabbitmq-server")
 
+    # PostgreSQL
+    # To configure follow instructions here: https://help.ubuntu.com/community/PostgreSQL
+    sudo("apt-get -y install libpq-dev")
+    sudo("apt-get -y install postgresql postgresql-contrib")
+    #sudo("apt-get -y install pgadmin3")
+
     sudo("apt-get -y install git-core")
     sudo("apt-get -y install python-setuptools")
     sudo("easy_install pip")
