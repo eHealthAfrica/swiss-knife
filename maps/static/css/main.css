@@ -1,0 +1,37 @@
+/* ---- Main Dashboard View ---- */
+
+
+/* Filter Form */
+.span2 .select2-container {
+  width: 100% !important;
+}
+
+.span2 legend {
+  display: none;
+}
+
+.span2 form {
+  margin: 0;
+}
+
+.span2 legend+.control-group {
+  margin-top: 0;
+}
+
+.span2 .form-actions {
+  margin-bottom: 0;
+  padding: 0;
+  background-color: inherit;
+}
+
+.span2 .btn+.btn {
+  float: right;
+}
+
+.span2 input, .span2 textarea, .span2 .uneditable-input {
+  width: inherit;
+}
+
+.span2 .icon-large {
+  padding-right: 5px;
+}

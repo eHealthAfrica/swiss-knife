@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Alerts</title>
+<link rel="stylesheet" href="/static/css/bootstrap.min.css">
+<link rel="stylesheet" href="/static/css/bootstrap-responsive.min.css">
+<link rel="stylesheet" href="/static/css/font-awesome.min.css">
+<link rel="stylesheet" href="/static/css/bs3imports.css">
+<link rel="stylesheet" href="/static/css/main.css">
+<!--[if IE 7]
+<link rel="stylesheet" href="/static/css/font-awesome-ie7.min.css">
+<![endif]-->
+<!--<style>
+body {
+height: 100%;
+padding-top: 90px;
+}
+</style>-->
+
+    <link rel="stylesheet" href="/static/js/leaflet/leaflet.css" />
+    <link rel="stylesheet" href="/static/js/leaflet/awesome-markers/leaflet.awesome-markers.css">
+
+    <!--[if lte IE 8]>
+        <link rel="stylesheet" href="/static/js/leaflet/leaflet.ie.css" />
+    <![endif]-->
+
+<script src="/static/js/modernizr-2.6.2.min.js"></script>
+<script src="/static/js/jquery-1.10.1.min.js"></script>
+
+</head>
+<body>
+
+<div class="container-fluid">
+<div class="row-fluid">
+
+<div class="span10">
+
+    <div class="container">
+        <div class="row">
+            <div class="span12">
+                <h3><i class="icon-hospital"></i> Alerts</h3>
+                <div id="map" style="width: 100%; height: 600px;"></div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript" charset="utf-8" src="/static/js/leaflet/leaflet.js"></script>
+    <script type="text/javascript" charset="utf-8" src="/static/js/leaflet/awesome-markers/leaflet.awesome-markers.min.js"></script>
+    <script type="text/javascript" charset="utf-8" src="/static/js/wax/wax.leaf.min.js"></script>
+
+    <script type="text/javascript" charset="utf-8">
+        var lastReportDateString = 'Last Report Date:', //TODO: I18n strings in javascript should really be handled through Django's i18n for javascript function.
+            trainingDateString = 'Training Date:';
+        $(document).ready(function () {
+            var osmUrl='http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+                    osmAttrib='Map data © OpenStreetMap contributors',
+                    osm = L.tileLayer(osmUrl, {minZoom: 6, maxZoom: 18, attribution: osmAttrib}),
+                    markers = {
+                        OTP: {
+                            green: L.AwesomeMarkers.icon({
+                                icon: 'star',
+                                markerColor: 'green',
+                                prefix: 'icon'
+                            }),
+                            red: L.AwesomeMarkers.icon({
+                                icon: 'star',
+                                markerColor: 'red',
+                                prefix: 'icon'
+                            }),
+                            black: L.AwesomeMarkers.icon({
+                                icon: 'star',
+                                markerColor: 'black',
+                                prefix: 'icon'
+                            }),
+                            purple: L.AwesomeMarkers.icon({
+                                icon: 'star',
+                                markerColor: 'purple',
+                                prefix: 'icon'
+                            }),                    
+                        },
+                        IPF: {
+                            green: L.AwesomeMarkers.icon({
+                                icon: 'circle',
+                                markerColor: 'green',
+                                prefix: 'icon'
+                            }),
+                            red: L.AwesomeMarkers.icon({
+                                icon: 'circle',
+                                markerColor: 'red',
+                                prefix: 'icon'
+                            }),
+                            black: L.AwesomeMarkers.icon({
+                                icon: 'circle',
+                                markerColor: 'black',
+                                prefix: 'icon'
+                            }),
+                            purple: L.AwesomeMarkers.icon({
+                                icon: 'circle',
+                                markerColor: 'purple',
+                                prefix: 'icon'
+                            }),  
+                        }
+                    };
+
+                function selectIcon(program, site_state) {
+                    switch (site_state) {
+                        //TODO: Color codes for site states should be standardized
+                        case 'INACTIVE-TRAINED': return markers[program].purple;
+                        case 'ACTIVE': return markers[program].green;
+                        case 'ACTIVE-BAD': return markers[program].red;
+                        case 'INACTIVE-RECENT': return markers[program].red;
+                        case 'INACTIVE': return markers[program].black;
+                    }  
+                    // Unknown program state?
+                    return markers[program].red;
+     
+                }
+                function markerPopup(site_properties) {
+                    var infoText = site_properties.name;
+                    switch (site_properties.current_state) {
+                        case 'INACTIVE-TRAINED': {
+                            var trainingDate = new Date(site_properties.training_date);
+                            infoText += '<br><b>' + trainingDateString + '</b> ' + trainingDate.toDateString();
+                            return infoText;
+                        }
+                        case 'ACTIVE':
+                        case 'ACTIVE-BAD': 
+                        case 'INACTIVE-RECENT':
+                        case 'INACTIVE': {
+                            var lastReportDate = new Date(site_properties.last_report_date);
+                            infoText += '<br><b>' + lastReportDateString + '</b> ' + lastReportDate.toDateString();
+                            return infoText;
+                        }
+                    }  
+                    return infoText;
+                }
+
+
+
+            // Facilities GeoJSON Layer
+            var IPFfacilities = requestUpdatedJson('facilities','program__code=IPF'),
+                OTPfacilities = requestUpdatedJson('facilities','program__code=OTP'),
+                IPFfacilitiesLayer = L.geoJson(IPFfacilities,{
+                    style: {
+                            "weight": 1,
+                            "opacity":0.3,
+                    },
+                    pointToLayer: function (feature, latlng) {
+                        return L.marker(latlng, {
+                            icon: selectIcon('IPF', feature.properties.current_state),
+                        });
+                    },
+                    onEachFeature: function(feature, layer) {
+                        if (feature.properties && feature.properties.name && feature.properties.current_state) {
+                            layer.bindPopup(markerPopup(feature.properties));
+                        }
+                    }
+                }),
+                OTPfacilitiesLayer = L.geoJson(OTPfacilities,{
+                    style: {
+                            "weight": 1,
+                            "opacity":0.3,
+                    },
+                    pointToLayer: function (feature, latlng) {
+                        return L.marker(latlng, {
+                            icon: selectIcon('OTP', feature.properties.current_state),
+                        });
+                    },
+                    onEachFeature: function(feature, layer) {
+                        if (feature.properties && feature.properties.name && feature.properties.current_state) {
+                            layer.bindPopup(markerPopup(feature.properties));
+                        }
+                    }
+                });
+
+            var map = L.map('map', {
+                center: new L.LatLng(-12, 18),
+                zoom: 6,
+                minZoom: 1,
+                maxZoom: 18,
+                layers: [osm,OTPfacilitiesLayer,IPFfacilitiesLayer]
+            });
+
+            var baseMaps = {
+                "Map": osm
+            };
+            var overlayMaps = {
+                "OTP": OTPfacilitiesLayer,
+                "IPF": IPFfacilitiesLayer
+            };
+            map.fitBounds(OTPfacilitiesLayer.getBounds());
+            L.control.layers(baseMaps, overlayMaps, {collapsed: false}).addTo(map);
+        });
+
+        function requestUpdatedJson(api, argument) {
+            // TODO: Use URL tag to create apiUrl from view name and args
+            var apiUrl;
+
+            if (argument) {
+                apiUrl = "/api/v1/"+api+"/?"+argument+"&format=json";
+            } else {
+                apiUrl = "/api/v1/"+api+"/?format=json";
+            }
+             
+
+            var result;
+            $.ajax({
+                type: 'GET',
+                url: apiUrl,
+                contentType: "application/json; charset=utf-8",
+                dataType: 'json',
+                async: false,
+                success: function(data) {
+                    result = parseResponseJsonData(data.objects)
+                },
+                error: function (req, status, error) {
+                    var facilities = JSON.parse($("#facilities").attr("data"));
+                    result = parseResponseJsonData(facilities);
+                    // alert('Unable to get data: ' + api + ' -  ' + error);
+                }
+            });
+            return result;
+        } 
+        function parseResponseJsonData(data) {
+            var items = [];
+
+            $.each(data,function(i,f) {
+                var item = {};
+                item.properties = {
+                    hcid: f.hcid, 
+                    name: f.name,
+                    current_state: f.current_state,
+                    last_report_date: f.last_report_date,
+                    training_date: f.training_date
+                };
+                item.geometry = f.geom;
+                item.type = "Feature";
+                items.push(item)
+            });
+
+            // return the FeatureCollection
+            return { type: "FeatureCollection", features: items };
+        }
+    </script>
+
+</div>
+</div>
+</div>
+
+<script src="/static/js/bootstrap.min.js"></script>
+
+</body>
+</html>

@@ -23,7 +23,8 @@ router.register(r'users', UserViewSet)
 
 urlpatterns = patterns('',
     # Examples:
-    url(r'^$', 'swiss_knife.views.home', name='home'),
+    url(r'^$', include('maps.urls')),
+    #url(r'^$', 'swiss_knife.views.home', name='home'),
     # url(r'^blog/', include('blog.urls')),
     url( r'^autodeploy/', include('auto_deploy.urls', namespace='auto_deploy')),
     url(r'^admin/', include(admin.site.urls)),
