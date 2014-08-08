@@ -2,11 +2,12 @@ from django.db import models
 from ehealth_tools.django_tools.mixins import HistoryFieldsMixin
 
 class Driver(HistoryFieldsMixin):
-    name = models.CharField(max_length=50)
+    phone = models.CharField(max_length=50)
+    name = models.CharField(max_length=50, blank=True, null=True)
 
 class Vehicle(HistoryFieldsMixin):
-    name = models.CharField(max_length=50)
-    plate_number = models.CharField(max_length=50)
+    license = models.CharField(max_length=50)
+    name = models.CharField(max_length=50, blank=True, null=True)
     vehicle_type = models.CharField(max_length=50, blank=True, null=True)
     tank_size = models.IntegerField(blank=True, null=True)
     fuel_type = models.CharField(max_length=20, blank=True, null=True)
@@ -20,6 +21,8 @@ class Event(HistoryFieldsMixin):
         ('Driving Stopped',) * 2,
     )
     event_type = models.CharField(max_length=50, choices=EVENT_TYPES)
+    lat = models.DecimalField(max_digits=19, decimal_places=6)
+    lon = models.DecimalField(max_digits=19, decimal_places=6)
     driver = models.ForeignKey(Driver)
     timestamp = models.DateTimeField()
 

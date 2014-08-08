@@ -71,6 +71,10 @@ def first_deploy():
     run("git clone %s" %git_repo_remote)
     create_env()
     install_requirements()
+    # Install DB by hand and then syncdb and migrate
+    # with cd(project_name):
+    #     run("python manage.py syncdb")
+    #     run("python manage.py migrate")
     configure_server()
     restart_services()
 
@@ -82,6 +86,9 @@ def pull():
 @task
 def deploy():
     pull()
+    with cd(project_name):
+        run("python manage.py syncdb")
+        run("python manage.py migrate")
     install_requirements()
     reload_services()
 
