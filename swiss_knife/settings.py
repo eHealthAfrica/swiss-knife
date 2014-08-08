@@ -108,9 +108,6 @@ MEDIA_ROOT = os.path.normpath(os.path.join(BASE_DIR, 'media'))
 MEDIA_URL = '/media/'
 ########## END MEDIA CONFIGURATION
 
-# https://github.com/minism/django-tastypie-swagger
-TASTYPIE_SWAGGER_API_MODULE = 'swiss_knife.urls.v1_api'
-
 # http://www.django-rest-framework.org/
 REST_FRAMEWORK = {
     # Use hyperlinked styles by default.
