@@ -1,0 +1,12 @@
+django==1.6
+uwsgi
+celery
+fabric
+pillow
+south
+-e git+https://github.com/eHealthAfrica/ehealth-tools.git#egg=EhealthTools
+djangorestframework
+markdown
+django-filter
+# Dev
+django-extensions
