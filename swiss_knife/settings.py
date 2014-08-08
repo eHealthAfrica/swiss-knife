@@ -41,7 +41,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django.contrib.gis',
+    #'django.contrib.gis',
     # External
     'south',
     'rest_framework',
@@ -49,6 +49,7 @@ INSTALLED_APPS = (
     # Dev
     'django_extensions',
     # Internal
+    'core',
     'maps',
 )
 
