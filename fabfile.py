@@ -86,10 +86,10 @@ def pull():
 @task
 def deploy():
     pull()
+    install_requirements()
     with cd(project_name):
         run("python manage.py syncdb")
         run("python manage.py migrate")
-    install_requirements()
     reload_services()
 
 @task
