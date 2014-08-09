@@ -45,6 +45,7 @@ INSTALLED_APPS = (
     # External
     'south',
     'rest_framework',
+    'django_filters',
     # Local
     # Dev
     'django_extensions',
