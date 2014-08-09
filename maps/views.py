@@ -5,7 +5,7 @@ import decimal
 from django.http import HttpResponse
 from django.shortcuts import render
 
-from core.models import Event
+from core.models import Event, VehicleLocation
 
 class DecimalEncoder(json.JSONEncoder):
     def _iterencode(self, o, markers=None):
@@ -34,4 +34,21 @@ def get_latest_events(request, seconds):
         content_type = 'application/json; charset=utf8',
         status=status
     )
-    
+
+def get_latest_vehicle_locations(request, seconds):
+    response = []
+    status = 200
+    for f in VehicleLocation.objects.filter(timestamp__gte=datetime.datetime.now()-datetime.timedelta(0,int(seconds))).order_by('vehicle','timestamp'):
+        event = {}
+        event['lat'] = f.lat
+        event['lon'] = f.lon
+        event['event_type'] = f.event_t_id
+        event['timestamp'] = f.timestamp.strftime('%s')
+        event['driver'] = f.driver_id
+        event['vehicle'] = f.vehicle_id
+        response.append(event)
+    return HttpResponse(
+        json.dumps(response, use_decimal=True),
+        content_type = 'application/json; charset=utf8',
+        status=status
+    )
