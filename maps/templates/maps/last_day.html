@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Alerts</title>
+<link rel="stylesheet" href="/static/css/bootstrap.min.css">
+<link rel="stylesheet" href="/static/css/bootstrap-responsive.min.css">
+<link rel="stylesheet" href="/static/css/font-awesome.min.css">
+<link rel="stylesheet" href="/static/css/bs3imports.css">
+<link rel="stylesheet" href="/static/css/main.css">
+<!--[if IE 7]
+<link rel="stylesheet" href="/static/css/font-awesome-ie7.min.css">
+<![endif]-->
+<!--<style>
+body {
+height: 100%;
+padding-top: 90px;
+}
+</style>-->
+
+    <link rel="stylesheet" href="/static/js/leaflet/leaflet.css" />
+    <link rel="stylesheet" href="/static/js/leaflet/awesome-markers/leaflet.awesome-markers.css">
+
+    <!--[if lte IE 8]>
+        <link rel="stylesheet" href="/static/js/leaflet/leaflet.ie.css" />
+    <![endif]-->
+
+<script src="/static/js/modernizr-2.6.2.min.js"></script>
+<script src="/static/js/jquery-1.11.1.js"></script>
+
+</head>
+<body>
+
+<div class="container-fluid">
+<div class="row-fluid">
+
+<div class="span10">
+
+    <div class="container">
+        <div class="row">
+            <div class="span12">
+                <h3><i class="icon-hospital"></i> Alerts</h3>
+                <div id="map" style="width: 100%; height: 600px;"></div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript" charset="utf-8" src="/static/js/leaflet/leaflet.js"></script>
+    <script type="text/javascript" charset="utf-8" src="/static/js/leaflet/awesome-markers/leaflet.awesome-markers.min.js"></script>
+    <script type="text/javascript" charset="utf-8" src="/static/js/wax/wax.leaf.min.js"></script>
+
+    <script type="text/javascript" charset="utf-8">
+        $(document).ready(initiateMap());
+
+        function initiateMap() {
+            var osmUrl='http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+                    osmAttrib='Map data © OpenStreetMap contributors',
+                    osm = L.tileLayer(osmUrl, {minZoom: 6, maxZoom: 18, attribution: osmAttrib}),
+                    markers = {
+
+                        Event: {
+                            green: L.AwesomeMarkers.icon({
+                                icon: 'circle',
+                                markerColor: 'green',
+                                prefix: 'icon'
+                            }),
+                            red: L.AwesomeMarkers.icon({
+                                icon: 'circle',
+                                markerColor: 'red',
+                                prefix: 'icon'
+                            }),
+                            black: L.AwesomeMarkers.icon({
+                                icon: 'circle',
+                                markerColor: 'black',
+                                prefix: 'icon'
+                            }),
+                            purple: L.AwesomeMarkers.icon({
+                                icon: 'circle',
+                                markerColor: 'purple',
+                                prefix: 'icon'
+                            }),  
+                        }
+                    };
+
+                function selectIcon(event_class, event_type) {
+                    switch (event_type) {
+                        case 'Car Incident': return markers[event_class].purple;
+                        case 'Security Incident': return markers[event_class].red;
+                        case 'Driving Started': return markers[event_class].green;
+                        case 'Driving Stopped': return markers[event_class].green;
+                    }  
+                    // Unknown event type?
+                    return markers[event_class].red;
+     
+                }
+                function markerPopup(marker_properties) {
+                    var infoText = marker_properties.name;
+
+                    return infoText;
+                }
+
+
+
+            // Facilities GeoJSON Layer
+            var events = requestUpdatedJson('/latest_events/86400/'),
+                eventsLayer = L.geoJson(events,{
+                    style: {
+                            "weight": 1,
+                            "opacity":0.3,
+                    },
+                    pointToLayer: function (feature, latlng) {
+                        return L.marker(latlng, {
+                            icon: selectIcon('Event', feature.properties.event_type),
+                        });
+                    },
+                    onEachFeature: function(feature, layer) {
+                        if (feature.properties && feature.properties.name) {
+                            layer.bindPopup(markerPopup(feature.properties));
+                        }
+                    }
+                });
+
+            var map = L.map('map', {
+                center: new L.LatLng(-12, 18),
+                zoom: 6,
+                minZoom: 1,
+                maxZoom: 18,
+                layers: [osm,eventsLayer]
+            });
+
+            var baseMaps = {
+                "Map": osm
+            };
+            var overlayMaps = {
+                "Events": eventsLayer,
+            };
+            map.fitBounds(eventsLayer.getBounds());
+            L.control.layers(baseMaps, overlayMaps, {collapsed: false}).addTo(map);
+        }
+
+        function requestUpdatedJson(apiUrl) {
+            // TODO: Use URL tag to create apiUrl from view name and args
+            //var apiUrl;
+
+           // if (argument) {
+           //     apiUrl = "/rest/"+api+"/?"+argument+"&format=json";
+           // } else {
+           //     apiUrl = "/rest/"+api+"/?format=json";
+           // }
+             
+
+            var result;
+            $.ajax({
+                type: 'GET',
+                url: apiUrl,
+                contentType: "application/json; charset=utf-8",
+                dataType: 'json',
+                async: false,
+                success: function(data) {
+                    result = parseResponseJsonData(data)
+                },
+                error: function (req, status, error) {
+                    //var facilities = JSON.parse($("#facilities").attr("data"));
+                    //result = parseResponseJsonData(facilities);
+                     alert('Unable to get data: ' + api + ' -  ' + error);
+                }
+            });
+            return result;
+        } 
+        function parseResponseJsonData(data) {
+            var items = [];
+
+            $.each(data,function(i,f) {
+                var item = {};
+                item.properties = {
+                    name: "Lat: "+f.lat+", Lon: "+f.lon, 
+                    event_type: f.event_type, 
+                    timestamp: f.timestamp,
+                };
+                item.geometry = {
+                    type: "Point",
+                    coordinates: [f.lat, f.lon]
+                };
+                item.type = "Feature";
+                items.push(item)
+            });
+
+            // return the FeatureCollection
+            return { type: "FeatureCollection", features: items };
+        }
+    </script>
+
+</div>
+</div>
+</div>
+
+<script src="/static/js/bootstrap.min.js"></script>
+
+</body>
+</html>
