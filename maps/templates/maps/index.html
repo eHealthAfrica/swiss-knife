@@ -41,8 +41,8 @@ padding-top: 90px;
         <div class="row">
             <div class="span12">
                 <h3><i class="icon-hospital"></i> Alerts</h3>
-                <div id="map" style="width: 80%; height: 600px;"></div>
-                <div id="events" style="width: 20%; height: 600px;">
+                <div id="map" style="width: 80%; height: 600px; position: relative;display: inline-block;float: left;"></div>
+                <div id="events" style="width: 19%; height: 600px;display: inline-block;padding-left: 5px;">
                     <h4>Events</h4>
                 </div>
             </div>
@@ -117,6 +117,30 @@ padding-top: 90px;
                         });
                     },
                     onEachFeature: function(feature, layer) {
+                        var events = document.getElementById('events'),
+                        featureDiv = document.createElement('div');
+                        featureDiv.classList.add('event-div')
+                        $(featureDiv).html(feature.properties.name);
+                        events.appendChild(featureDiv);
+                        if (feature.properties && feature.properties.name) {
+                            layer.bindPopup(markerPopup(feature.properties));
+                        }
+                    }
+                });
+            }
+
+            function createVehicleDriveLayer(events) {
+                return L.geoJson(events,{
+                    style: {
+                            "weight": 1,
+                            "opacity":0.3,
+                    },
+                    pointToLayer: function (feature, latlng) {
+                        return L.marker(latlng, {
+                            icon: selectIcon('Event', feature.properties.event_type),
+                        });
+                    },
+                    onEachFeature: function(feature, layer) {
                         if (feature.properties && feature.properties.name) {
                             layer.bindPopup(markerPopup(feature.properties));
                         }
@@ -129,7 +153,7 @@ padding-top: 90px;
                 eventsLayer = createEventsLayer(events),
                 vehiclePositions = requestUpdatedJson('/latest_vehicle_locations/600/'),
                 clonedVehiclePositions = _.clone(vehiclePositions),
-                vehiclePositionsLayer = createEventsLayer(vehiclePositions);
+                vehiclePositionsLayer = createVehicleDriveLayer(vehiclePositions);
 
             setInterval(function() {
                 var newEvents = requestUpdatedJson('/latest_events/86400/');
@@ -150,7 +174,7 @@ padding-top: 90px;
                     vehiclePositions = newVehiclePositions;
                     clonedVehiclePositions = _.clone(vehiclePositions);
                     map.removeLayer(vehiclePositionsLayer);
-                    vehiclePositionsLayer = createEventsLayer(vehiclePositions);
+                    vehiclePositionsLayer = createVehicleDriveLayer(vehiclePositions);
                     vehiclePositionsLayer.addTo(map);
                 }
             }, 5000);
@@ -213,7 +237,7 @@ padding-top: 90px;
 
         function parseResponseJsonData(data) {
             var items = [];
-            var events_array = [];
+            //var events_array = [];
 
             $.each(data,function(i,f) {
                 var item = {};
@@ -229,8 +253,8 @@ padding-top: 90px;
                 item.type = "Feature";
                 items.push(item);
 
-                events_array.push(f);
-                console.log(events_array);
+              //  events_array.push(f);
+              //  console.log(events_array);
             });
 
             // return the FeatureCollection

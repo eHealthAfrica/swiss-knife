@@ -38,3 +38,8 @@
 .span2 .icon-large {
   padding-right: 5px;
 }
+
+.event-div {
+  border-bottom: 1px solid black;
+  padding-bottom: 20px;
+}
