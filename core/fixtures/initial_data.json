@@ -11,6 +11,39 @@
   }
 },
 {
+  "pk": 2, 
+  "model": "core.driver", 
+  "fields": {
+    "phone": "08097772347", 
+    "created_at": "2014-08-08T22:13:50.241Z", 
+    "modified_at": "2014-08-08T23:38:31.818Z", 
+    "changed_by": null, 
+    "name": "Mallam Ibrahim"
+  }
+},
+{
+  "pk": 3, 
+  "model": "core.driver", 
+  "fields": {
+    "phone": "08097772329", 
+    "created_at": "2014-08-08T23:40:16.045Z", 
+    "modified_at": "2014-08-08T23:40:16.045Z", 
+    "changed_by": 1, 
+    "name": "Faisal"
+  }
+},
+{
+  "pk": 4, 
+  "model": "core.driver", 
+  "fields": {
+    "phone": "08093082558", 
+    "created_at": "2014-08-08T23:41:01.893Z", 
+    "modified_at": "2014-08-08T23:41:01.893Z", 
+    "changed_by": 1, 
+    "name": "Abdullahi"
+  }
+},
+{
   "pk": 1, 
   "model": "core.vehicle", 
   "fields": {
@@ -26,47 +59,111 @@
   }
 },
 {
+  "pk": 2, 
+  "model": "core.vehicle", 
+  "fields": {
+    "last_driver": 2, 
+    "name": "", 
+    "license": "XK 440 AKD", 
+    "fuel_type": "", 
+    "created_at": "2014-08-08T23:43:59.053Z", 
+    "modified_at": "2014-08-08T23:43:59.053Z", 
+    "tank_size": 0, 
+    "vehicle_type": "", 
+    "changed_by": null
+  }
+},
+{
+  "pk": 3, 
+  "model": "core.vehicle", 
+  "fields": {
+    "last_driver": 3, 
+    "name": "", 
+    "license": "XV 113 ZRA", 
+    "fuel_type": "", 
+    "created_at": "2014-08-08T23:44:40.289Z", 
+    "modified_at": "2014-08-08T23:44:40.289Z", 
+    "tank_size": 0, 
+    "vehicle_type": "", 
+    "changed_by": null
+  }
+},
+{
   "pk": 1, 
   "model": "core.eventtype", 
   "fields": {
-    "created_at": "2014-08-09T11:16:01.784Z", 
     "code": 0, 
-    "modified_at": "2014-08-09T11:16:01.784Z", 
+    "severity": null, 
+    "created_at": "2014-08-09T11:16:01.784Z", 
+    "modified_at": "2014-08-09T17:28:29.596Z", 
+    "icon_name": "fa-play", 
     "changed_by": null, 
-    "name": "Driving started"
+    "name": "Driving Started"
   }
 },
 {
   "pk": 2, 
   "model": "core.eventtype", 
   "fields": {
-    "created_at": "2014-08-09T11:16:10.317Z", 
     "code": 1, 
-    "modified_at": "2014-08-09T11:16:10.317Z", 
+    "severity": null, 
+    "created_at": "2014-08-09T11:16:10.317Z", 
+    "modified_at": "2014-08-09T17:25:15.227Z", 
+    "icon_name": "fa-stop", 
     "changed_by": null, 
-    "name": "Driving stopped"
+    "name": "Driving Stopped"
   }
 },
 {
   "pk": 3, 
   "model": "core.eventtype", 
   "fields": {
-    "created_at": "2014-08-09T11:16:23.497Z", 
     "code": 2, 
-    "modified_at": "2014-08-09T11:16:23.498Z", 
+    "severity": null, 
+    "created_at": "2014-08-09T11:16:23.497Z", 
+    "modified_at": "2014-08-09T17:28:59.278Z", 
+    "icon_name": "fa-car", 
     "changed_by": null, 
-    "name": "Car Incident"
+    "name": "Car Breakdown"
   }
 },
 {
   "pk": 4, 
   "model": "core.eventtype", 
   "fields": {
-    "created_at": "2014-08-09T11:16:38.023Z", 
     "code": 3, 
-    "modified_at": "2014-08-09T11:16:38.023Z", 
+    "severity": null, 
+    "created_at": "2014-08-09T11:16:38.023Z", 
+    "modified_at": "2014-08-09T17:24:37.780Z", 
+    "icon_name": "fa-shield", 
     "changed_by": null, 
     "name": "Security Incident"
+  }
+},
+{
+  "pk": 5, 
+  "model": "core.eventtype", 
+  "fields": {
+    "code": 4, 
+    "severity": 0, 
+    "created_at": "2014-08-09T11:46:36.810Z", 
+    "modified_at": "2014-08-09T11:48:28.477Z", 
+    "icon_name": "fa-exclamation-triangle", 
+    "changed_by": null, 
+    "name": "Out of fuel (Generator)"
+  }
+},
+{
+  "pk": 6, 
+  "model": "core.eventtype", 
+  "fields": {
+    "code": 5, 
+    "severity": 0, 
+    "created_at": "2014-08-09T11:47:41.258Z", 
+    "modified_at": "2014-08-09T11:47:41.258Z", 
+    "icon_name": "fa-road", 
+    "changed_by": null, 
+    "name": "Stock on Highway"
   }
 },
 {
@@ -81,6 +178,366 @@
     "vehicle": null, 
     "lat": "12.002053", 
     "driver": 1, 
+    "changed_by": null
+  }
+},
+{
+  "pk": 3, 
+  "model": "core.event", 
+  "fields": {
+    "timestamp": "2014-08-09T15:31:43.749Z", 
+    "modified_at": "2014-08-09T15:31:44.567Z", 
+    "created_at": "2014-08-09T15:31:44.567Z", 
+    "lon": "8.550527", 
+    "event_t": 3, 
+    "vehicle": null, 
+    "lat": "11.994852", 
+    "driver": 4, 
+    "changed_by": null
+  }
+},
+{
+  "pk": 4, 
+  "model": "core.event", 
+  "fields": {
+    "timestamp": "2014-08-09T15:43:48.620Z", 
+    "modified_at": "2014-08-09T15:43:49.651Z", 
+    "created_at": "2014-08-09T15:43:49.651Z", 
+    "lon": "8.550548", 
+    "event_t": 1, 
+    "vehicle": null, 
+    "lat": "11.994855", 
+    "driver": 4, 
+    "changed_by": null
+  }
+},
+{
+  "pk": 5, 
+  "model": "core.event", 
+  "fields": {
+    "timestamp": "2014-08-09T15:43:53.621Z", 
+    "modified_at": "2014-08-09T15:43:54.432Z", 
+    "created_at": "2014-08-09T15:43:54.432Z", 
+    "lon": "8.550548", 
+    "event_t": 2, 
+    "vehicle": null, 
+    "lat": "11.994855", 
+    "driver": 4, 
+    "changed_by": null
+  }
+},
+{
+  "pk": 6, 
+  "model": "core.event", 
+  "fields": {
+    "timestamp": "2014-08-09T15:47:59.234Z", 
+    "modified_at": "2014-08-09T15:48:02.683Z", 
+    "created_at": "2014-08-09T15:48:02.683Z", 
+    "lon": "8.550549", 
+    "event_t": 2, 
+    "vehicle": null, 
+    "lat": "11.994822", 
+    "driver": 4, 
+    "changed_by": null
+  }
+},
+{
+  "pk": 7, 
+  "model": "core.event", 
+  "fields": {
+    "timestamp": "2014-08-09T15:47:59.242Z", 
+    "modified_at": "2014-08-09T15:48:02.815Z", 
+    "created_at": "2014-08-09T15:48:02.815Z", 
+    "lon": "8.550549", 
+    "event_t": 1, 
+    "vehicle": null, 
+    "lat": "11.994822", 
+    "driver": 4, 
+    "changed_by": null
+  }
+},
+{
+  "pk": 8, 
+  "model": "core.event", 
+  "fields": {
+    "timestamp": "2014-08-09T15:48:24.773Z", 
+    "modified_at": "2014-08-09T15:48:28.204Z", 
+    "created_at": "2014-08-09T15:48:28.204Z", 
+    "lon": "8.550549", 
+    "event_t": 1, 
+    "vehicle": null, 
+    "lat": "11.994822", 
+    "driver": 4, 
+    "changed_by": null
+  }
+},
+{
+  "pk": 9, 
+  "model": "core.event", 
+  "fields": {
+    "timestamp": "2014-08-09T15:48:27.062Z", 
+    "modified_at": "2014-08-09T15:48:30.484Z", 
+    "created_at": "2014-08-09T15:48:30.484Z", 
+    "lon": "8.550549", 
+    "event_t": 2, 
+    "vehicle": null, 
+    "lat": "11.994822", 
+    "driver": 4, 
+    "changed_by": null
+  }
+},
+{
+  "pk": 10, 
+  "model": "core.event", 
+  "fields": {
+    "timestamp": "2014-08-09T15:56:23.930Z", 
+    "modified_at": "2014-08-09T15:56:27.464Z", 
+    "created_at": "2014-08-09T15:56:27.464Z", 
+    "lon": "8.550550", 
+    "event_t": 3, 
+    "vehicle": null, 
+    "lat": "11.994893", 
+    "driver": 4, 
+    "changed_by": null
+  }
+},
+{
+  "pk": 11, 
+  "model": "core.event", 
+  "fields": {
+    "timestamp": "2014-08-09T16:22:55.299Z", 
+    "modified_at": "2014-08-09T16:22:56.184Z", 
+    "created_at": "2014-08-09T16:22:56.184Z", 
+    "lon": "8.550517", 
+    "event_t": 3, 
+    "vehicle": null, 
+    "lat": "11.994865", 
+    "driver": 4, 
+    "changed_by": null
+  }
+},
+{
+  "pk": 12, 
+  "model": "core.event", 
+  "fields": {
+    "timestamp": "2014-08-09T07:10:19Z", 
+    "modified_at": "2014-08-09T17:01:12.734Z", 
+    "created_at": "2014-08-09T17:01:12.734Z", 
+    "lon": "8.550317", 
+    "event_t": 6, 
+    "vehicle": null, 
+    "lat": "11.894893", 
+    "driver": 2, 
+    "changed_by": null
+  }
+},
+{
+  "pk": 13, 
+  "model": "core.event", 
+  "fields": {
+    "timestamp": "2014-08-09T17:08:21.705Z", 
+    "modified_at": "2014-08-09T17:08:22.590Z", 
+    "created_at": "2014-08-09T17:08:22.590Z", 
+    "lon": "8.550553", 
+    "event_t": 1, 
+    "vehicle": null, 
+    "lat": "11.994841", 
+    "driver": 4, 
+    "changed_by": null
+  }
+},
+{
+  "pk": 14, 
+  "model": "core.event", 
+  "fields": {
+    "timestamp": "2014-08-09T17:08:36.905Z", 
+    "modified_at": "2014-08-09T17:08:37.784Z", 
+    "created_at": "2014-08-09T17:08:37.784Z", 
+    "lon": "8.550553", 
+    "event_t": 1, 
+    "vehicle": null, 
+    "lat": "11.994841", 
+    "driver": 4, 
+    "changed_by": null
+  }
+},
+{
+  "pk": 15, 
+  "model": "core.event", 
+  "fields": {
+    "timestamp": "2014-08-09T17:09:19Z", 
+    "modified_at": "2014-08-09T17:09:57.323Z", 
+    "created_at": "2014-08-09T17:09:57.323Z", 
+    "lon": "8.552317", 
+    "event_t": 1, 
+    "vehicle": null, 
+    "lat": "11.874893", 
+    "driver": 2, 
+    "changed_by": null
+  }
+},
+{
+  "pk": 16, 
+  "model": "core.event", 
+  "fields": {
+    "timestamp": "2014-08-09T17:10:45.980Z", 
+    "modified_at": "2014-08-09T17:10:46.853Z", 
+    "created_at": "2014-08-09T17:10:46.853Z", 
+    "lon": "8.550551", 
+    "event_t": 4, 
+    "vehicle": null, 
+    "lat": "11.994835", 
+    "driver": 4, 
+    "changed_by": null
+  }
+},
+{
+  "pk": 17, 
+  "model": "core.event", 
+  "fields": {
+    "timestamp": "2014-08-09T17:10:48.509Z", 
+    "modified_at": "2014-08-09T17:10:49.374Z", 
+    "created_at": "2014-08-09T17:10:49.374Z", 
+    "lon": "8.550551", 
+    "event_t": 5, 
+    "vehicle": null, 
+    "lat": "11.994835", 
+    "driver": 4, 
+    "changed_by": null
+  }
+},
+{
+  "pk": 18, 
+  "model": "core.event", 
+  "fields": {
+    "timestamp": "2014-08-09T17:12:27.157Z", 
+    "modified_at": "2014-08-09T17:12:30.941Z", 
+    "created_at": "2014-08-09T17:12:30.941Z", 
+    "lon": "8.550506", 
+    "event_t": 1, 
+    "vehicle": null, 
+    "lat": "11.994836", 
+    "driver": 4, 
+    "changed_by": null
+  }
+},
+{
+  "pk": 19, 
+  "model": "core.event", 
+  "fields": {
+    "timestamp": "2014-08-09T17:12:32.717Z", 
+    "modified_at": "2014-08-09T17:12:36.492Z", 
+    "created_at": "2014-08-09T17:12:36.492Z", 
+    "lon": "8.550506", 
+    "event_t": 2, 
+    "vehicle": null, 
+    "lat": "11.994836", 
+    "driver": 4, 
+    "changed_by": null
+  }
+},
+{
+  "pk": 20, 
+  "model": "core.event", 
+  "fields": {
+    "timestamp": "2014-08-09T17:12:46.621Z", 
+    "modified_at": "2014-08-09T17:12:50.399Z", 
+    "created_at": "2014-08-09T17:12:50.399Z", 
+    "lon": "8.550508", 
+    "event_t": 3, 
+    "vehicle": null, 
+    "lat": "11.994835", 
+    "driver": 4, 
+    "changed_by": null
+  }
+},
+{
+  "pk": 21, 
+  "model": "core.event", 
+  "fields": {
+    "timestamp": "2014-08-09T17:12:53.398Z", 
+    "modified_at": "2014-08-09T17:12:57.164Z", 
+    "created_at": "2014-08-09T17:12:57.164Z", 
+    "lon": "8.550513", 
+    "event_t": 4, 
+    "vehicle": null, 
+    "lat": "11.994832", 
+    "driver": 4, 
+    "changed_by": null
+  }
+},
+{
+  "pk": 22, 
+  "model": "core.event", 
+  "fields": {
+    "timestamp": "2014-08-09T17:13:07.661Z", 
+    "modified_at": "2014-08-09T17:13:11.427Z", 
+    "created_at": "2014-08-09T17:13:11.427Z", 
+    "lon": "8.550515", 
+    "event_t": 5, 
+    "vehicle": null, 
+    "lat": "11.994831", 
+    "driver": 4, 
+    "changed_by": null
+  }
+},
+{
+  "pk": 23, 
+  "model": "core.event", 
+  "fields": {
+    "timestamp": "2014-08-09T17:13:16.376Z", 
+    "modified_at": "2014-08-09T17:13:17.423Z", 
+    "created_at": "2014-08-09T17:13:17.423Z", 
+    "lon": "8.550548", 
+    "event_t": 5, 
+    "vehicle": null, 
+    "lat": "11.994834", 
+    "driver": 4, 
+    "changed_by": null
+  }
+},
+{
+  "pk": 24, 
+  "model": "core.event", 
+  "fields": {
+    "timestamp": "2014-08-09T17:13:18.295Z", 
+    "modified_at": "2014-08-09T17:13:19.210Z", 
+    "created_at": "2014-08-09T17:13:19.210Z", 
+    "lon": "8.550548", 
+    "event_t": 6, 
+    "vehicle": null, 
+    "lat": "11.994834", 
+    "driver": 4, 
+    "changed_by": null
+  }
+},
+{
+  "pk": 25, 
+  "model": "core.event", 
+  "fields": {
+    "timestamp": "2014-08-09T17:30:20.932Z", 
+    "modified_at": "2014-08-09T17:30:21.856Z", 
+    "created_at": "2014-08-09T17:30:21.856Z", 
+    "lon": "8.550543", 
+    "event_t": 3, 
+    "vehicle": null, 
+    "lat": "11.994853", 
+    "driver": 4, 
+    "changed_by": null
+  }
+},
+{
+  "pk": 26, 
+  "model": "core.event", 
+  "fields": {
+    "timestamp": "2014-08-09T17:34:01.376Z", 
+    "modified_at": "2014-08-09T17:34:05.107Z", 
+    "created_at": "2014-08-09T17:34:05.107Z", 
+    "lon": "8.550516", 
+    "event_t": 4, 
+    "vehicle": null, 
+    "lat": "11.994822", 
+    "driver": 4, 
     "changed_by": null
   }
 }
