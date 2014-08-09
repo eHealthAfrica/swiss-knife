@@ -139,9 +139,8 @@ padding-top: 90px;
 
 
             // Facilities GeoJSON Layer
-            var IPFfacilities = requestUpdatedJson('facilities','program__code=IPF'),
-                OTPfacilities = requestUpdatedJson('facilities','program__code=OTP'),
-                IPFfacilitiesLayer = L.geoJson(IPFfacilities,{
+            var events = requestUpdatedJson('events'),
+                eventsLayer = L.geoJson(events,{
                     style: {
                             "weight": 1,
                             "opacity":0.3,
@@ -156,22 +155,6 @@ padding-top: 90px;
                             layer.bindPopup(markerPopup(feature.properties));
                         }
                     }
-                }),
-                OTPfacilitiesLayer = L.geoJson(OTPfacilities,{
-                    style: {
-                            "weight": 1,
-                            "opacity":0.3,
-                    },
-                    pointToLayer: function (feature, latlng) {
-                        return L.marker(latlng, {
-                            icon: selectIcon('OTP', feature.properties.current_state),
-                        });
-                    },
-                    onEachFeature: function(feature, layer) {
-                        if (feature.properties && feature.properties.name && feature.properties.current_state) {
-                            layer.bindPopup(markerPopup(feature.properties));
-                        }
-                    }
                 });
 
             var map = L.map('map', {
@@ -179,15 +162,14 @@ padding-top: 90px;
                 zoom: 6,
                 minZoom: 1,
                 maxZoom: 18,
-                layers: [osm,OTPfacilitiesLayer,IPFfacilitiesLayer]
+                layers: [osm,eventsLayer]
             });
 
             var baseMaps = {
                 "Map": osm
             };
             var overlayMaps = {
-                "OTP": OTPfacilitiesLayer,
-                "IPF": IPFfacilitiesLayer
+                "Events": eventsLayer,
             };
             map.fitBounds(OTPfacilitiesLayer.getBounds());
             L.control.layers(baseMaps, overlayMaps, {collapsed: false}).addTo(map);
@@ -198,9 +180,9 @@ padding-top: 90px;
             var apiUrl;
 
             if (argument) {
-                apiUrl = "/api/v1/"+api+"/?"+argument+"&format=json";
+                apiUrl = "/rest/"+api+"/?"+argument+"&format=json";
             } else {
-                apiUrl = "/api/v1/"+api+"/?format=json";
+                apiUrl = "/rest/"+api+"/?format=json";
             }
              
 
@@ -215,9 +197,9 @@ padding-top: 90px;
                     result = parseResponseJsonData(data.objects)
                 },
                 error: function (req, status, error) {
-                    var facilities = JSON.parse($("#facilities").attr("data"));
-                    result = parseResponseJsonData(facilities);
-                    // alert('Unable to get data: ' + api + ' -  ' + error);
+                    //var facilities = JSON.parse($("#facilities").attr("data"));
+                    //result = parseResponseJsonData(facilities);
+                     alert('Unable to get data: ' + api + ' -  ' + error);
                 }
             });
             return result;
@@ -228,13 +210,13 @@ padding-top: 90px;
             $.each(data,function(i,f) {
                 var item = {};
                 item.properties = {
-                    hcid: f.hcid, 
-                    name: f.name,
-                    current_state: f.current_state,
-                    last_report_date: f.last_report_date,
-                    training_date: f.training_date
+                    event_type: f.event_type, 
+                    timestamp: f.timestamp,
                 };
-                item.geometry = f.geom;
+                item.geometry = {
+                    type: "Point",
+                    coordinates: [f.lat, f.lon]
+                };
                 item.type = "Feature";
                 items.push(item)
             });
