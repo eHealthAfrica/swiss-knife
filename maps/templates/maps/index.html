@@ -119,9 +119,9 @@ padding-top: 90px;
                     onEachFeature: function(feature, layer) {
                         var events = document.getElementById('events'),
                         featureDiv = document.createElement('div');
-                        featureDiv.classList.add('event-div')
+                        featureDiv.classList.add('event-div');
                         $(featureDiv).html(feature.properties.name);
-                        events.appendChild(featureDiv);
+                        events.inserBefore(featureDiv,events.firstChild.nextSibling);
                         if (feature.properties && feature.properties.name) {
                             layer.bindPopup(markerPopup(feature.properties));
                         }
@@ -129,23 +129,28 @@ padding-top: 90px;
                 });
             }
 
-            function createVehicleDriveLayer(events) {
-                return L.geoJson(events,{
-                    style: {
-                            "weight": 1,
-                            "opacity":0.3,
-                    },
-                    pointToLayer: function (feature, latlng) {
-                        return L.marker(latlng, {
-                            icon: selectIcon('Event', feature.properties.event_type),
-                        });
-                    },
-                    onEachFeature: function(feature, layer) {
-                        if (feature.properties && feature.properties.name) {
-                            layer.bindPopup(markerPopup(feature.properties));
-                        }
+            function createVehicleDriveLayer(locations) {
+                var driver = locations[0].properties.driver, i=0 ,polylines=[],linepoints=[];
+                while (i<locations.length) {
+                    if (locations[i].properties.driver!=driver) {
+                       // driver_count++;
+                        polylines.push(linepoints);
+                        linepoints = [];
                     }
-                });
+                    linepoints.push(locations[i].item.geometry);
+                }
+                polylines.push(linepoints);
+
+                var layer= L.layerGroup();
+                for (j=0;j<polylines.length;j++) {
+                    layer.addLayer(new L.Polyline(pointList, {
+                        color: 'red',
+                        weight: 5,
+                        smoothFactor: 1
+
+                    }));
+                }
+                return layer;
             }
             // Facilities GeoJSON Layer
             var events = requestUpdatedJson('/latest_events/86400/'),
@@ -232,7 +237,7 @@ padding-top: 90px;
         //     return "Driver " + driverId;
         // }
         function getBubbleName(f) {
-            return "Driver: "+ "<b>" + f.driver_phone+ "</b>" + "<br>" + f.lat + ", " + f.lon + "<br>" + "Event Code: " + f.event_code + "<br>" + f.event_name + "<br>" + f.timestamp;
+            return "Driver: "+ "<b>" + f.driver_phone+ "</b>" + "<br>" + f.lat + ", " + f.lon + "<br>" + "Event Code: " + f.event_code + "<br>" + f.event_name + "<br>" + new Date(f.timestamp*1000);
         }
 
         function parseResponseJsonData(data) {
@@ -245,6 +250,7 @@ padding-top: 90px;
                     name: getBubbleName(f), //getDriver(f.driver),//"Lat: "+f.lat+", Lon: "+f.lon, 
                     event_type: f.event_type, 
                     timestamp: f.timestamp,
+                    driver: f.driver,
                 };
                 item.geometry = {
                     type: "Point",
