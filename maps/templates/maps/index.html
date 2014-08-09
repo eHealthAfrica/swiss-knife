@@ -27,6 +27,7 @@ padding-top: 90px;
 
 <script src="/static/js/modernizr-2.6.2.min.js"></script>
 <script src="/static/js/jquery-1.11.1.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.6.0/underscore-min.js"></script>
 
 </head>
 <body>
@@ -51,6 +52,7 @@ padding-top: 90px;
 
     <script type="text/javascript" charset="utf-8">
         $(document).ready(initiateMap());
+
 
         function initiateMap() {
             var osmUrl='http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
@@ -100,10 +102,8 @@ padding-top: 90px;
                 }
 
 
-
-            // Facilities GeoJSON Layer
-            var events = requestUpdatedJson('/latest_events/86400/'),
-                eventsLayer = L.geoJson(events,{
+            function createEventsLayer(events) {
+                return L.geoJson(events,{
                     style: {
                             "weight": 1,
                             "opacity":0.3,
@@ -119,6 +119,24 @@ padding-top: 90px;
                         }
                     }
                 });
+            }
+            // Facilities GeoJSON Layer
+            var events = requestUpdatedJson('/latest_events/86400/'),
+                clonedEvents = _.clone(events),
+                eventsLayer = createEventsLayer(events);
+
+            setInterval(function() {
+                var newEvents = requestUpdatedJson('/latest_events/86400/');
+                if (!(_.isEqual(clonedEvents, newEvents))) {
+                    console.log('events have changed');
+                    events = newEvents;
+                    clonedEvents = _.clone(events);
+                    map.removeLayer(eventsLayer);
+                    eventsLayer = createEventsLayer(events);
+                    eventsLayer.addTo(map);
+                }
+            }, 5000);
+
 
             var map = L.map('map', {
                 center: new L.LatLng(-12, 18),
@@ -127,6 +145,7 @@ padding-top: 90px;
                 maxZoom: 18,
                 layers: [osm,eventsLayer]
             });
+            MAP = map;
 
             var baseMaps = {
                 "Map": osm
