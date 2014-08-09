@@ -186,16 +186,20 @@ padding-top: 90px;
             });
             return result;
         } 
-        function getDriver(driverId) {
-            return "Driver " + driverId;
+        // function getDriver(driverId) {
+        //     return "Driver " + driverId;
+        // }
+        function getBubbleName(f) {
+            return "Driver: "+ "<b>" + f.driver_phone+ "</b>" + "<br>" + f.lat + ", " + f.lon + "<br>" + "Event Code: " + f.event_code + "<br>" + f.event_name;
         }
+
         function parseResponseJsonData(data) {
             var items = [];
 
             $.each(data,function(i,f) {
                 var item = {};
                 item.properties = {
-                    name: getDriver(f.driver),//"Lat: "+f.lat+", Lon: "+f.lon, 
+                    name: getBubbleName(f), //getDriver(f.driver),//"Lat: "+f.lat+", Lon: "+f.lon, 
                     event_type: f.event_type, 
                     timestamp: f.timestamp,
                 };

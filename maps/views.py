@@ -25,9 +25,15 @@ def get_latest_events(request, seconds):
         event['lat'] = f.lat
         event['lon'] = f.lon
         event['event_type'] = f.event_t_id
+        event['event_code'] = f.event_t.code
+        event['event_name'] = f.event_t.name
         event['timestamp'] = f.timestamp.strftime('%s')
         event['driver'] = f.driver_id
+        event['driver_name'] = f.driver.name
+        event['driver_phone'] = f.driver.phone
         event['vehicle'] = f.vehicle_id
+        if f.vehicle_id:
+            event['vehicle_license'] = f.vehicle.license
         response.append(event)
     return HttpResponse(
         json.dumps(response, use_decimal=True),
