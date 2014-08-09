@@ -1,0 +1,9 @@
+#!/bin/bash
+
+if [ "$(uname)" == "Darwin" ]; then
+    bin/phantomjs-mac lib/simplePaginationRenderer.js $1 $2 $3 $4       
+elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
+    bin/phantomjs-linux lib/simplePaginationRenderer.js $1 $2 $3 $4 
+fi
+
+

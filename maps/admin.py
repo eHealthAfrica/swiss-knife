@@ -1,3 +1,7 @@
 from django.contrib import admin
 
-# Register your models here.
+from maps.models import ReportPDF
+
+class ReportPDFAdmin(admin.ModelAdmin):
+    pass
+admin.site.register(ReportPDF, ReportPDFAdmin)
