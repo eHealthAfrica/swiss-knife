@@ -22,6 +22,7 @@ class VehicleViewSet(viewsets.ModelViewSet):
 
 class DriverViewSet(viewsets.ModelViewSet):
     model = Driver
+    filter_fields = ('phone', 'name')
 
 class EventViewSet(viewsets.ModelViewSet):
     model = Event
