@@ -75,6 +75,7 @@ def first_deploy():
     # with cd(project_name):
     #     run("python manage.py syncdb")
     #     run("python manage.py migrate")
+    # Create and give perm to /var/www/static
     configure_server()
     restart_services()
 

@@ -1,38 +1,87 @@
-[{
-    "pk": 1,
-    "model": "core.driver",
-    "fields": {
-        "phone": "+15203998880",
-        "created_at": "2014-08-09T07:00:09.744Z",
-        "modified_at": "2014-08-09T07:00:09.745Z",
-        "changed_by": null,
-        "name": "Johannes"
-    }
-}, {
-    "pk": 1,
-    "model": "core.vehicle",
-    "fields": {
-        "last_driver": 1,
-        "name": "Red Pickup",
-        "license": "AK-47",
-        "fuel_type": "petrol",
-        "created_at": "2014-08-09T07:08:54.781Z",
-        "modified_at": "2014-08-09T07:08:54.781Z",
-        "tank_size": 80,
-        "vehicle_type": "RANGER Pick Up Regular XL 2.2 TDCi",
-        "changed_by": null
-    }
-}, {
-    "pk": 1,
-    "model": "core.event",
-    "fields": {
-        "event_type": "Car Incident",
-        "modified_at": "2014-08-09T07:10:23.566Z",
-        "created_at": "2014-08-09T07:10:23.566Z",
-        "lon": "6.924910",
-        "timestamp": "2014-08-09T07:10:19.494Z",
-        "lat": "8.665010",
-        "driver": 1,
-        "changed_by": null
-    }
-}]
+[
+{
+  "pk": 1, 
+  "model": "core.driver", 
+  "fields": {
+    "phone": "+15203998880", 
+    "created_at": "2014-08-09T07:00:09.744Z", 
+    "modified_at": "2014-08-09T07:00:09.745Z", 
+    "changed_by": null, 
+    "name": "Johannes"
+  }
+},
+{
+  "pk": 1, 
+  "model": "core.vehicle", 
+  "fields": {
+    "last_driver": 1, 
+    "name": "Red Pickup", 
+    "license": "AK-47", 
+    "fuel_type": "petrol", 
+    "created_at": "2014-08-09T07:08:54.781Z", 
+    "modified_at": "2014-08-09T07:08:54.781Z", 
+    "tank_size": 80, 
+    "vehicle_type": "RANGER Pick Up Regular XL 2.2 TDCi", 
+    "changed_by": null
+  }
+},
+{
+  "pk": 1, 
+  "model": "core.eventtype", 
+  "fields": {
+    "created_at": "2014-08-09T11:16:01.784Z", 
+    "code": 0, 
+    "modified_at": "2014-08-09T11:16:01.784Z", 
+    "changed_by": null, 
+    "name": "Driving started"
+  }
+},
+{
+  "pk": 2, 
+  "model": "core.eventtype", 
+  "fields": {
+    "created_at": "2014-08-09T11:16:10.317Z", 
+    "code": 1, 
+    "modified_at": "2014-08-09T11:16:10.317Z", 
+    "changed_by": null, 
+    "name": "Driving stopped"
+  }
+},
+{
+  "pk": 3, 
+  "model": "core.eventtype", 
+  "fields": {
+    "created_at": "2014-08-09T11:16:23.497Z", 
+    "code": 2, 
+    "modified_at": "2014-08-09T11:16:23.498Z", 
+    "changed_by": null, 
+    "name": "Car Incident"
+  }
+},
+{
+  "pk": 4, 
+  "model": "core.eventtype", 
+  "fields": {
+    "created_at": "2014-08-09T11:16:38.023Z", 
+    "code": 3, 
+    "modified_at": "2014-08-09T11:16:38.023Z", 
+    "changed_by": null, 
+    "name": "Security Incident"
+  }
+},
+{
+  "pk": 1, 
+  "model": "core.event", 
+  "fields": {
+    "timestamp": "2014-08-09T07:10:19Z", 
+    "modified_at": "2014-08-09T11:20:06.463Z", 
+    "created_at": "2014-08-09T07:10:23.566Z", 
+    "lon": "6.924910", 
+    "event_t": 3, 
+    "vehicle": null, 
+    "lat": "8.665010", 
+    "driver": 1, 
+    "changed_by": null
+  }
+}
+]
