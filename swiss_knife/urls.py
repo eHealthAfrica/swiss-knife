@@ -3,7 +3,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 from django.contrib.auth.models import User
-from core.models import Driver, Vehicle, Event
+from core.models import Driver, Vehicle, Event, EventType, VehicleLocation
 
 import auto_deploy
 
@@ -26,6 +26,11 @@ class DriverViewSet(viewsets.ModelViewSet):
 class EventViewSet(viewsets.ModelViewSet):
     model = Event
 
+class EventTypeViewSet(viewsets.ModelViewSet):
+    model = EventType
+
+class VehicleLocationViewSet(viewsets.ModelViewSet):
+    model = VehicleLocation
 
 # Routers provide an easy way of automatically determining the URL conf.
 router = routers.DefaultRouter()
@@ -33,6 +38,8 @@ router.register(r'users', UserViewSet)
 router.register(r'drivers', DriverViewSet)
 router.register(r'vehicles', VehicleViewSet)
 router.register(r'events', EventViewSet)
+router.register(r'event-types', EventTypeViewSet)
+router.register(r'vehicle-locations', VehicleLocationViewSet)
 
 urlpatterns = patterns('',
     # Examples:
