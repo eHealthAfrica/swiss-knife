@@ -50,8 +50,9 @@ padding-top: 90px;
     <script type="text/javascript" charset="utf-8" src="/static/js/wax/wax.leaf.min.js"></script>
 
     <script type="text/javascript" charset="utf-8">
+        $(document).ready(initiateMap());
 
-        $(document).ready(function () {
+        function initiateMap() {
             var osmUrl='http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
                     osmAttrib='Map data © OpenStreetMap contributors',
                     osm = L.tileLayer(osmUrl, {minZoom: 6, maxZoom: 18, attribution: osmAttrib}),
@@ -135,7 +136,7 @@ padding-top: 90px;
             };
             map.fitBounds(eventsLayer.getBounds());
             L.control.layers(baseMaps, overlayMaps, {collapsed: false}).addTo(map);
-        });
+        }
 
         function requestUpdatedJson(api, argument) {
             // TODO: Use URL tag to create apiUrl from view name and args

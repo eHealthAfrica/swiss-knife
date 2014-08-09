@@ -1,8 +1,8 @@
 from django.conf.urls import patterns, include, url
 from django.views.generic.base import TemplateView
-from views import apiview
+from . import views
 
 urlpatterns = patterns('',
-    url(r'^api/$', apiview), #TODO replace with api inclusion !
+    url(r'^latest_events/(?P<seconds>\d+)/$', views.get_latest_events, name='latest events'),
     url(r'^$', TemplateView.as_view(template_name='maps/index.html')),
 )
