@@ -16,6 +16,8 @@ class Vehicle(HistoryFieldsMixin):
 class EventType(HistoryFieldsMixin):
     code = models.IntegerField()
     name = models.CharField(max_length=50)
+    severity = models.IntegerField(blank=True, null=True)
+    icon_name = models.CharField(max_length=50, blank=True, null=True)
 
 class Event(HistoryFieldsMixin):
     # EVENT_TYPES = (
