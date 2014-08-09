@@ -20,7 +20,7 @@ class DecimalEncoder(json.JSONEncoder):
 def get_latest_events(request, seconds):
     response = []
     status = 200
-    for f in Event.objects.filter(timestamp__gte=datetime.datetime.now()-datetime.timedelta(0,int(seconds))):
+    for f in Event.objects.filter(timestamp__gte=datetime.datetime.now()-datetime.timedelta(seconds=int(seconds))):
         event = {}
         event['lat'] = f.lat
         event['lon'] = f.lon
@@ -38,7 +38,7 @@ def get_latest_events(request, seconds):
 def get_latest_vehicle_locations(request, seconds):
     response = []
     status = 200
-    for f in VehicleLocation.objects.filter(timestamp__gte=datetime.datetime.now()-datetime.timedelta(0,int(seconds))).order_by('vehicle','timestamp'):
+    for f in VehicleLocation.objects.filter(timestamp__gte=datetime.datetime.now()-datetime.timedelta(seconds=int(seconds))).order_by('vehicle','timestamp'):
         event = {}
         event['lat'] = f.lat
         event['lon'] = f.lon

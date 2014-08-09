@@ -102,7 +102,7 @@ padding-top: 90px;
 
 
             // Facilities GeoJSON Layer
-            var events = requestUpdatedJson('events'),
+            var events = requestUpdatedJson('/latest_events/86400/'),
                 eventsLayer = L.geoJson(events,{
                     style: {
                             "weight": 1,
@@ -138,15 +138,15 @@ padding-top: 90px;
             L.control.layers(baseMaps, overlayMaps, {collapsed: false}).addTo(map);
         }
 
-        function requestUpdatedJson(api, argument) {
+        function requestUpdatedJson(apiUrl) {
             // TODO: Use URL tag to create apiUrl from view name and args
-            var apiUrl;
+            //var apiUrl;
 
-            if (argument) {
-                apiUrl = "/rest/"+api+"/?"+argument+"&format=json";
-            } else {
-                apiUrl = "/rest/"+api+"/?format=json";
-            }
+           // if (argument) {
+           //     apiUrl = "/rest/"+api+"/?"+argument+"&format=json";
+           // } else {
+           //     apiUrl = "/rest/"+api+"/?format=json";
+           // }
              
 
             var result;
