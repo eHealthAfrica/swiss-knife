@@ -2,6 +2,11 @@ server {
 	listen 80 default_server;
 	listen [::]:80 default_server ipv6only=on;
 
+    location /static/ {    
+        autoindex on;    
+        root   /var/www/static/;    
+    }
+
 	location / {
 		uwsgi_pass unix:/tmp/uwsgi.sock;
 		include /etc/nginx/uwsgi_params;

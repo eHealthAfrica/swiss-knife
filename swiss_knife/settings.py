@@ -99,6 +99,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.6/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = '/var/www/static/'
 
 ########## MEDIA CONFIGURATION
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#media-root
@@ -107,9 +108,6 @@ MEDIA_ROOT = os.path.normpath(os.path.join(BASE_DIR, 'media'))
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#media-url
 MEDIA_URL = '/media/'
 ########## END MEDIA CONFIGURATION
-
-# https://github.com/minism/django-tastypie-swagger
-TASTYPIE_SWAGGER_API_MODULE = 'swiss_knife.urls.v1_api'
 
 # http://www.django-rest-framework.org/
 REST_FRAMEWORK = {
