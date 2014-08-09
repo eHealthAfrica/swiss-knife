@@ -76,10 +76,10 @@
     "timestamp": "2014-08-09T07:10:19Z", 
     "modified_at": "2014-08-09T11:20:06.463Z", 
     "created_at": "2014-08-09T07:10:23.566Z", 
-    "lon": "6.924910", 
+    "lon": "8.557799", 
     "event_t": 3, 
     "vehicle": null, 
-    "lat": "8.665010", 
+    "lat": "12.002053", 
     "driver": 1, 
     "changed_by": null
   }
