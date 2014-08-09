@@ -123,7 +123,10 @@ padding-top: 90px;
             // Facilities GeoJSON Layer
             var events = requestUpdatedJson('/latest_events/86400/'),
                 clonedEvents = _.clone(events),
-                eventsLayer = createEventsLayer(events);
+                eventsLayer = createEventsLayer(events),
+                vehiclePositions = requestUpdatedJson('/latest_vehicle_locations/600/'),
+                clonedVehiclePositions = _.clone(vehiclePositions),
+                vehiclePositionsLayer = createEventsLayer(vehiclePositions);
 
             setInterval(function() {
                 var newEvents = requestUpdatedJson('/latest_events/86400/');
@@ -137,21 +140,33 @@ padding-top: 90px;
                 }
             }, 5000);
 
+           setInterval(function() {
+                var newVehiclePositions = requestUpdatedJson('/latest_vehicle_locations/600/');
+                if (!(_.isEqual(clonedVehiclePositions, newVehiclePositions))) {
+                    console.log('vehicle positions have changed');
+                    vehiclePositions = newVehiclePositions;
+                    clonedVehiclePositions = _.clone(vehiclePositions);
+                    map.removeLayer(vehiclePositionsLayer);
+                    vehiclePositionsLayer = createEventsLayer(vehiclePositions);
+                    vehiclePositionsLayer.addTo(map);
+                }
+            }, 5000);
+
 
             var map = L.map('map', {
                 center: new L.LatLng(-12, 18),
                 zoom: 6,
                 minZoom: 1,
                 maxZoom: 18,
-                layers: [osm,eventsLayer]
+                layers: [osm,eventsLayer,vehiclePositionsLayer]
             });
-            MAP = map;
 
             var baseMaps = {
                 "Map": osm
             };
             var overlayMaps = {
                 "Events": eventsLayer,
+                "Vehicle positions": vehiclePositionsLayer,
             };
             map.fitBounds(eventsLayer.getBounds());
             L.control.layers(baseMaps, overlayMaps, {collapsed: false}).addTo(map);
