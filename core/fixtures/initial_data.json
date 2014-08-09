@@ -3,7 +3,7 @@
   "pk": 1, 
   "model": "core.driver", 
   "fields": {
-    "phone": "+15203998880", 
+    "phone": "12345", 
     "created_at": "2014-08-09T07:00:09.744Z", 
     "modified_at": "2014-08-09T07:00:09.745Z", 
     "changed_by": null, 

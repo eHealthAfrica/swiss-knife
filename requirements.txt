@@ -11,3 +11,4 @@ django-filter
 psycopg2
 # Dev
 django-extensions
+simplejson
