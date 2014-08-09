@@ -84,10 +84,10 @@ padding-top: 90px;
 
                 function selectIcon(event_class, event_type) {
                     switch (event_type) {
-                        case 'Car Incident': return markers[event_class].purple;
-                        case 'Security Incident': return markers[event_class].red;
-                        case 'Driving Started': return markers[event_class].green;
-                        case 'Driving Stopped': return markers[event_class].green;
+                        case 4: return markers[event_class].purple;
+                        case 3: return markers[event_class].red;
+                        case 1: return markers[event_class].green;
+                        case 2: return markers[event_class].green;
                     }  
                     // Unknown event type?
                     return markers[event_class].red;
@@ -167,13 +167,16 @@ padding-top: 90px;
             });
             return result;
         } 
+        function getDriver(driverId) {
+            return "Driver " + driverId;
+        }
         function parseResponseJsonData(data) {
             var items = [];
 
             $.each(data,function(i,f) {
                 var item = {};
                 item.properties = {
-                    name: "Lat: "+f.lat+", Lon: "+f.lon, 
+                    name: getDriver(f.driver),//"Lat: "+f.lat+", Lon: "+f.lon, 
                     event_type: f.event_type, 
                     timestamp: f.timestamp,
                 };
