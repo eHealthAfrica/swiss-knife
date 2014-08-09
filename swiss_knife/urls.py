@@ -4,6 +4,7 @@ from django.conf.urls.static import static
 
 from django.contrib.auth.models import User
 from core.models import Driver, Vehicle, Event, EventType, VehicleLocation
+from core.filters import EventFilter
 
 import auto_deploy
 
@@ -26,6 +27,7 @@ class DriverViewSet(viewsets.ModelViewSet):
 
 class EventViewSet(viewsets.ModelViewSet):
     model = Event
+    filter_class = EventFilter
 
 class EventTypeViewSet(viewsets.ModelViewSet):
     model = EventType
