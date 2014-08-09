@@ -41,7 +41,10 @@ padding-top: 90px;
         <div class="row">
             <div class="span12">
                 <h3><i class="icon-hospital"></i> Alerts</h3>
-                <div id="map" style="width: 100%; height: 600px;"></div>
+                <div id="map" style="width: 80%; height: 600px;"></div>
+                <div id="events" style="width: 20%; height: 600px;">
+                    <h4>Events</h4>
+                </div>
             </div>
         </div>
     </div>
@@ -205,11 +208,12 @@ padding-top: 90px;
         //     return "Driver " + driverId;
         // }
         function getBubbleName(f) {
-            return "Driver: "+ "<b>" + f.driver_phone+ "</b>" + "<br>" + f.lat + ", " + f.lon + "<br>" + "Event Code: " + f.event_code + "<br>" + f.event_name;
+            return "Driver: "+ "<b>" + f.driver_phone+ "</b>" + "<br>" + f.lat + ", " + f.lon + "<br>" + "Event Code: " + f.event_code + "<br>" + f.event_name + "<br>" + f.timestamp;
         }
 
         function parseResponseJsonData(data) {
             var items = [];
+            var events_array = [];
 
             $.each(data,function(i,f) {
                 var item = {};
@@ -220,10 +224,13 @@ padding-top: 90px;
                 };
                 item.geometry = {
                     type: "Point",
-                    coordinates: [f.lat, f.lon]
+                    coordinates: [f.lon, f.lat]
                 };
                 item.type = "Feature";
-                items.push(item)
+                items.push(item);
+
+                events_array.push(f);
+                console.log(events_array);
             });
 
             // return the FeatureCollection
