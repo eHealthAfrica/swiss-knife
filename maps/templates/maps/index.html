@@ -146,15 +146,20 @@ padding-top: 90px;
                     polylines.push(linepoints);
                 }
                 console.log(polylines);
+                var colorOptions = ['red','blue','green','yellow'], colorChoice=0;
                 var layer= L.layerGroup(), pline;
                 for (j=0;j<polylines.length;j++) {
                     pline = new L.Polyline(polylines[j], {
-                        color: 'red',
+                        color: colorOptions[colorChoice],
                         weight: 5,
-                        smoothFactor: 1
+                        smoothFactor: 10
 
                     });
                     layer.addLayer(pline);
+                    colorChoice++;
+                    if (colorChoice > 3) {
+                        colorChoice = 0;
+                    }
                 }
                 console.log(layer);
                 return layer;
