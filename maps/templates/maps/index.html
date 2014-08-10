@@ -121,7 +121,7 @@ padding-top: 90px;
                         featureDiv = document.createElement('div');
                         featureDiv.classList.add('event-div');
                         $(featureDiv).html(feature.properties.name);
-                        events.inserBefore(featureDiv,events.firstChild.nextSibling);
+                        events.insertBefore(featureDiv,events.firstChild.nextSibling);
                         if (feature.properties && feature.properties.name) {
                             layer.bindPopup(markerPopup(feature.properties));
                         }
@@ -129,17 +129,20 @@ padding-top: 90px;
                 });
             }
 
-            function createVehicleDriveLayer(locations) {
-                var driver = locations[0].properties.driver, i=0 ,polylines=[],linepoints=[];
-                while (i<locations.length) {
-                    if (locations[i].properties.driver!=driver) {
-                       // driver_count++;
-                        polylines.push(linepoints);
-                        linepoints = [];
+            function createVehicleDriveLayer(data) {
+                var locations = data.features, polylines=[];
+                if (locations.length>0) {
+                    var driver = locations[0].properties.driver, i=0 ,linepoints=[];
+                    while (i<locations.length) {
+                        if (locations[i].properties.driver!=driver) {
+                        // driver_count++;
+                            polylines.push(linepoints);
+                            linepoints = [];
+                        }
+                        linepoints.push(locations[i].item.geometry);
                     }
-                    linepoints.push(locations[i].item.geometry);
+                    polylines.push(linepoints);
                 }
-                polylines.push(linepoints);
 
                 var layer= L.layerGroup();
                 for (j=0;j<polylines.length;j++) {
