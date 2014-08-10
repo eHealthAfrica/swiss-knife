@@ -1,6 +1,8 @@
 /* ---- Main Dashboard View ---- */
 
-
+body{
+  padding-top: 70px;
+}
 /* Filter Form */
 .row {
   margin-left: 30px;
@@ -42,4 +44,17 @@
 .event-div {
   border-bottom: 1px solid black;
   padding-bottom: 20px;
+}
+
+.logo-img {
+    max-height: 50px;
+}
+.navbar-brand{
+  padding: 0px;
+}
+
+/* line 13, ../../app/styles/main.scss */
+
+.pointer {
+    cursor: pointer;
 }

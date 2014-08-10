@@ -32,23 +32,48 @@ padding-top: 90px;
 <body>
 
 <div class="container-fluid">
-<div class="row-fluid">
+ <header>
+  <div role="navigation" class="navbar navbar-default navbar-fixed-top">
+    <!-- We use the fluid option here to avoid overriding the fixed width of a normal container within the narrow content columns. -->
+    <div class="container">
+      <div class="navbar-header">
+        <button data-target="#navbar-collapse" data-toggle="collapse" class="navbar-toggle" type="button">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a ui-sref="home" class="navbar-brand"><img class="logo-img" src="static/img/swiss-knife-logo.png"></a>
+      </div>
 
-<div class="span10">
+      <div id="navbar-collapse" class="collapse navbar-collapse">
+        <ul class="nav navbar-nav">
+          <li><a href="/">Home</a></li>
+        </ul>
+      </div><!-- /.navbar-collapse -->
+    </div>
+  </div>
+</header>
 
     <div class="container">
         <div class="row">
-            <div class="span12">
-                <h3><i class="icon-hospital"></i> Alerts</h3>
-                <div id="map" style="width: 80%; height: 600px; position: relative;display: inline-block;float: left;"></div>
-                <div id="events" style="width: 19%; height: 600px;display: inline-block;padding-left: 5px;">
+          <div class="col-sm-9">
+            <h3><i class="icon-hospital"></i> Alerts</h3>
+                <div id="map" style="height: 600px;"></div>
+          </div>
+          <div class="col-sm-3">
+            <div id="events" style="">
                     <h4>Events</h4>
                 </div>
-            </div>
+          </div>
         </div>
     </div>
 
-    <script type="text/javascript" charset="utf-8" src="/static/js/leaflet/leaflet.js"></script>
+    <div class="footer"></div>
+</div>
+
+
+<script type="text/javascript" charset="utf-8" src="/static/js/leaflet/leaflet.js"></script>
     <script type="text/javascript" charset="utf-8" src="/static/js/leaflet/awesome-markers/leaflet.awesome-markers.min.js"></script>
     <script type="text/javascript" charset="utf-8" src="/static/js/wax/wax.leaf.min.js"></script>
 
@@ -82,7 +107,7 @@ padding-top: 90px;
                                 icon: 'circle',
                                 markerColor: 'purple',
                                 prefix: 'icon'
-                            }),  
+                            }),
                         }
                     };
 
@@ -92,10 +117,10 @@ padding-top: 90px;
                         case 3: return markers[event_class].red;
                         case 1: return markers[event_class].green;
                         case 2: return markers[event_class].green;
-                    }  
+                    }
                     // Unknown event type?
                     return markers[event_class].red;
-     
+
                 }
                 function markerPopup(marker_properties) {
                     var infoText = marker_properties.name;
@@ -224,7 +249,7 @@ padding-top: 90px;
            // } else {
            //     apiUrl = "/rest/"+api+"/?format=json";
            // }
-             
+
 
             var result;
             $.ajax({
@@ -243,7 +268,7 @@ padding-top: 90px;
                 }
             });
             return result;
-        } 
+        }
         // function getDriver(driverId) {
         //     return "Driver " + driverId;
         // }
@@ -258,8 +283,8 @@ padding-top: 90px;
             $.each(data,function(i,f) {
                 var item = {};
                 item.properties = {
-                    name: getBubbleName(f), //getDriver(f.driver),//"Lat: "+f.lat+", Lon: "+f.lon, 
-                    event_type: f.event_type, 
+                    name: getBubbleName(f), //getDriver(f.driver),//"Lat: "+f.lat+", Lon: "+f.lon,
+                    event_type: f.event_type,
                     timestamp: f.timestamp,
                     driver: f.driver,
                 };
@@ -278,12 +303,8 @@ padding-top: 90px;
             return { type: "FeatureCollection", features: items };
         }
     </script>
-
-</div>
-</div>
-</div>
-
 <script src="/static/js/bootstrap.min.js"></script>
+
 
 </body>
 </html>
