@@ -1,308 +1,319 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<title>Alerts</title>
-<link rel="stylesheet" href="/static/bootstrap-css-only/css/bootstrap.min.css">
-<link rel="stylesheet" href="/static/css/font-awesome.min.css">
-<link rel="stylesheet" href="/static/css/bs3imports.css">
-<link rel="stylesheet" href="/static/css/main.css">
-<!--[if IE 7]
-<link rel="stylesheet" href="/static/css/font-awesome-ie7.min.css">
-<![endif]-->
-<!--<style>
-body {
-height: 100%;
-padding-top: 90px;
-}
-</style>-->
+  <meta charset="utf-8">
+  <title>Alerts</title>
+  <link rel="stylesheet" href="/static/bootstrap-css-only/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/static/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/static/css/bs3imports.css">
+  <link rel="stylesheet" href="/static/css/main.css">
+  <!--[if IE 7]
+  <link rel="stylesheet" href="/static/css/font-awesome-ie7.min.css">
+  <![endif]-->
+  <!--<style>
+  body {
+  height: 100%;
+  padding-top: 90px;
+  }
+  </style>-->
 
-    <link rel="stylesheet" href="/static/js/leaflet/leaflet.css" />
-    <link rel="stylesheet" href="/static/js/leaflet/awesome-markers/leaflet.awesome-markers.css">
+  <link rel="stylesheet" href="/static/js/leaflet/leaflet.css" />
+  <link rel="stylesheet" href="/static/js/leaflet/awesome-markers/leaflet.awesome-markers.css">
 
-    <!--[if lte IE 8]>
+  <!--[if lte IE 8]>
         <link rel="stylesheet" href="/static/js/leaflet/leaflet.ie.css" />
     <![endif]-->
 
-<script src="/static/js/modernizr-2.6.2.min.js"></script>
-<script src="/static/js/jquery-1.11.1.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.6.0/underscore-min.js"></script>
+  <script src="/static/js/modernizr-2.6.2.min.js"></script>
+  <script src="/static/js/jquery-1.11.1.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.6.0/underscore-min.js"></script>
 
 </head>
 <body>
 
 <div class="container-fluid">
- <header>
-  <div role="navigation" class="navbar navbar-default navbar-fixed-top">
-    <!-- We use the fluid option here to avoid overriding the fixed width of a normal container within the narrow content columns. -->
-    <div class="container">
-      <div class="navbar-header">
-        <button data-target="#navbar-collapse" data-toggle="collapse" class="navbar-toggle" type="button">
-          <span class="sr-only">Toggle navigation</span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-        </button>
-        <a ui-sref="home" class="navbar-brand"><img class="logo-img" src="static/img/swiss-knife-logo.png"></a>
+  <header>
+    <div role="navigation" class="navbar navbar-default navbar-fixed-top">
+      <!-- We use the fluid option here to avoid overriding the fixed width of a normal container within the narrow content columns. -->
+      <div class="container">
+        <div class="navbar-header">
+          <button data-target="#navbar-collapse" data-toggle="collapse" class="navbar-toggle" type="button">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a ui-sref="home" class="navbar-brand"><img class="logo-img" src="static/img/swiss-knife-logo.png"></a>
+        </div>
+
+        <div id="navbar-collapse" class="collapse navbar-collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="/">Home</a></li>
+          </ul>
+        </div><!-- /.navbar-collapse -->
       </div>
-
-      <div id="navbar-collapse" class="collapse navbar-collapse">
-        <ul class="nav navbar-nav">
-          <li><a href="/">Home</a></li>
-        </ul>
-      </div><!-- /.navbar-collapse -->
     </div>
-  </div>
-</header>
+  </header>
 
-    <div class="container">
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-9">
         <div class="row">
-          <div class="col-sm-9">
+          <div class="col-sm-12">
             <h3><i class="icon-hospital"></i> Alerts</h3>
-                <div id="map" style="height: 600px;"></div>
+            <div id="map" style="height: 600px;"></div>
           </div>
-          <div class="col-sm-3">
-            <div id="events" style="">
-                    <h4>Events</h4>
-                </div>
+          <div class="col-sm-12">
+            <h2>Daily reports</h2>
+            {% for report in reports %}
+              <p>{{report.timestamp}} <a href="{{report.pdf_file.url}}">Download</a></p>
+            {% endfor %}
           </div>
         </div>
+      </div>
+      <div class="col-sm-3">
+        <div id="events" style="">
+          <h4>Events</h4>
+        </div>
+      </div>
     </div>
 
-    <div class="footer"></div>
+  </div>
+
+  <div class="footer"></div>
 </div>
 
 
 <script type="text/javascript" charset="utf-8" src="/static/js/leaflet/leaflet.js"></script>
-    <script type="text/javascript" charset="utf-8" src="/static/js/leaflet/awesome-markers/leaflet.awesome-markers.min.js"></script>
-    <script type="text/javascript" charset="utf-8" src="/static/js/wax/wax.leaf.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="/static/js/leaflet/awesome-markers/leaflet.awesome-markers.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="/static/js/wax/wax.leaf.min.js"></script>
 
-    <script type="text/javascript" charset="utf-8">
-        $(document).ready(initiateMap());
-
-
-        function initiateMap() {
-            var osmUrl='http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-                    osmAttrib='Map data © OpenStreetMap contributors',
-                    osm = L.tileLayer(osmUrl, {minZoom: 6, maxZoom: 18, attribution: osmAttrib}),
-                    markers = {
-
-                        Event: {
-                            green: L.AwesomeMarkers.icon({
-                                icon: 'circle',
-                                markerColor: 'green',
-                                prefix: 'icon'
-                            }),
-                            red: L.AwesomeMarkers.icon({
-                                icon: 'circle',
-                                markerColor: 'red',
-                                prefix: 'icon'
-                            }),
-                            black: L.AwesomeMarkers.icon({
-                                icon: 'circle',
-                                markerColor: 'black',
-                                prefix: 'icon'
-                            }),
-                            purple: L.AwesomeMarkers.icon({
-                                icon: 'circle',
-                                markerColor: 'purple',
-                                prefix: 'icon'
-                            }),
-                        }
-                    };
-
-                function selectIcon(event_class, event_type) {
-                    switch (event_type) {
-                        case 4: return markers[event_class].purple;
-                        case 3: return markers[event_class].red;
-                        case 1: return markers[event_class].green;
-                        case 2: return markers[event_class].green;
-                    }
-                    // Unknown event type?
-                    return markers[event_class].red;
-
-                }
-                function markerPopup(marker_properties) {
-                    var infoText = marker_properties.name;
-
-                    return infoText;
-                }
+<script type="text/javascript" charset="utf-8">
+$(document).ready(initiateMap());
 
 
-            function createEventsLayer(events) {
-                return L.geoJson(events,{
-                    style: {
-                            "weight": 1,
-                            "opacity":0.3,
-                    },
-                    pointToLayer: function (feature, latlng) {
-                        return L.marker(latlng, {
-                            icon: selectIcon('Event', feature.properties.event_type),
-                        });
-                    },
-                    onEachFeature: function(feature, layer) {
-                        var events = document.getElementById('events'),
-                        featureDiv = document.createElement('div');
-                        featureDiv.classList.add('event-div');
-                        $(featureDiv).html(feature.properties.name);
-                        events.insertBefore(featureDiv,events.firstChild.nextSibling);
-                        if (feature.properties && feature.properties.name) {
-                            layer.bindPopup(markerPopup(feature.properties));
-                        }
-                    }
-                });
-            }
+function initiateMap() {
+  var osmUrl='http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+    osmAttrib='Map data © OpenStreetMap contributors',
+    osm = L.tileLayer(osmUrl, {minZoom: 6, maxZoom: 18, attribution: osmAttrib}),
+    markers = {
 
-            function createVehicleDriveLayer(data) {
-                var locations = data.features, polylines=[];
-                if (locations.length>0) {
-                    var driver = locations[0].properties.driver, i=0 ,linepoints=[];
-                    while (i<locations.length) {
+      Event: {
+        green: L.AwesomeMarkers.icon({
+                                       icon: 'circle',
+                                       markerColor: 'green',
+                                       prefix: 'icon'
+                                     }),
+        red: L.AwesomeMarkers.icon({
+                                     icon: 'circle',
+                                     markerColor: 'red',
+                                     prefix: 'icon'
+                                   }),
+        black: L.AwesomeMarkers.icon({
+                                       icon: 'circle',
+                                       markerColor: 'black',
+                                       prefix: 'icon'
+                                     }),
+        purple: L.AwesomeMarkers.icon({
+                                        icon: 'circle',
+                                        markerColor: 'purple',
+                                        prefix: 'icon'
+                                      }),
+      }
+    };
 
-                        if (locations[i].properties.driver!=driver) {
-                            driver = locations[i].properties.driver;
-                            polylines.push(linepoints);
-                            linepoints = [];
-                        }
-                        linepoints.push([locations[i].geometry.coordinates[1],locations[i].geometry.coordinates[0]]);
-                        i++;
-                    }
-                    polylines.push(linepoints);
-                }
-                console.log(polylines);
-                var colorOptions = ['red','blue','green','yellow'], colorChoice=0;
-                var layer= L.layerGroup(), pline;
-                for (j=0;j<polylines.length;j++) {
-                    pline = new L.Polyline(polylines[j], {
-                        color: colorOptions[colorChoice],
-                        weight: 5,
-                        smoothFactor: 10
+  function selectIcon(event_class, event_type) {
+    switch (event_type) {
+      case 4: return markers[event_class].purple;
+      case 3: return markers[event_class].red;
+      case 1: return markers[event_class].green;
+      case 2: return markers[event_class].green;
+    }
+    // Unknown event type?
+    return markers[event_class].red;
 
-                    });
-                    layer.addLayer(pline);
-                    colorChoice++;
-                    if (colorChoice > 3) {
-                        colorChoice = 0;
-                    }
-                }
-                console.log(layer);
-                return layer;
-            }
-            // Facilities GeoJSON Layer
-            var events = requestUpdatedJson('/latest_events/86400/'),
-                clonedEvents = _.clone(events),
-                eventsLayer = createEventsLayer(events),
-                vehiclePositions = requestUpdatedJson('/latest_vehicle_locations/600/'),
-                clonedVehiclePositions = _.clone(vehiclePositions),
-                vehiclePositionsLayer = createVehicleDriveLayer(vehiclePositions);
+  }
+  function markerPopup(marker_properties) {
+    var infoText = marker_properties.name;
 
-            setInterval(function() {
-                var newEvents = requestUpdatedJson('/latest_events/86400/');
-                if (!(_.isEqual(clonedEvents, newEvents))) {
-                    console.log('events have changed');
-                    events = newEvents;
-                    clonedEvents = _.clone(events);
-                    map.removeLayer(eventsLayer);
-                    eventsLayer = createEventsLayer(events);
-                    eventsLayer.addTo(map);
-                }
-            }, 5000);
-
-           setInterval(function() {
-                var newVehiclePositions = requestUpdatedJson('/latest_vehicle_locations/600/');
-                if (!(_.isEqual(clonedVehiclePositions, newVehiclePositions))) {
-                    console.log('vehicle positions have changed');
-                    vehiclePositions = newVehiclePositions;
-                    clonedVehiclePositions = _.clone(vehiclePositions);
-                    map.removeLayer(vehiclePositionsLayer);
-                    vehiclePositionsLayer = createVehicleDriveLayer(vehiclePositions);
-                    vehiclePositionsLayer.addTo(map);
-                }
-            }, 5000);
+    return infoText;
+  }
 
 
-            var map = L.map('map', {
-                center: new L.LatLng(-12, 18),
-                zoom: 6,
-                minZoom: 1,
-                maxZoom: 18,
-                layers: [osm,eventsLayer,vehiclePositionsLayer]
-            });
-
-            var baseMaps = {
-                "Map": osm
-            };
-            var overlayMaps = {
-                "Events": eventsLayer,
-                "Vehicle positions": vehiclePositionsLayer,
-            };
-            map.fitBounds(eventsLayer.getBounds());
-            L.control.layers(baseMaps, overlayMaps, {collapsed: false}).addTo(map);
+  function createEventsLayer(events) {
+    return L.geoJson(events,{
+      style: {
+        "weight": 1,
+        "opacity":0.3,
+      },
+      pointToLayer: function (feature, latlng) {
+        return L.marker(latlng, {
+          icon: selectIcon('Event', feature.properties.event_type),
+        });
+      },
+      onEachFeature: function(feature, layer) {
+        var events = document.getElementById('events'),
+          featureDiv = document.createElement('div');
+        featureDiv.classList.add('event-div');
+        $(featureDiv).html(feature.properties.name);
+        events.insertBefore(featureDiv,events.firstChild.nextSibling);
+        if (feature.properties && feature.properties.name) {
+          layer.bindPopup(markerPopup(feature.properties));
         }
+      }
+    });
+  }
 
-        function requestUpdatedJson(apiUrl) {
-            // TODO: Use URL tag to create apiUrl from view name and args
-            //var apiUrl;
+  function createVehicleDriveLayer(data) {
+    var locations = data.features, polylines=[];
+    if (locations.length>0) {
+      var driver = locations[0].properties.driver, i=0 ,linepoints=[];
+      while (i<locations.length) {
 
-           // if (argument) {
-           //     apiUrl = "/rest/"+api+"/?"+argument+"&format=json";
-           // } else {
-           //     apiUrl = "/rest/"+api+"/?format=json";
-           // }
-
-
-            var result;
-            $.ajax({
-                type: 'GET',
-                url: apiUrl,
-                contentType: "application/json; charset=utf-8",
-                dataType: 'json',
-                async: false,
-                success: function(data) {
-                    result = parseResponseJsonData(data)
-                },
-                error: function (req, status, error) {
-                    //var facilities = JSON.parse($("#facilities").attr("data"));
-                    //result = parseResponseJsonData(facilities);
-                     alert('Unable to get data: ' + api + ' -  ' + error);
-                }
-            });
-            return result;
+        if (locations[i].properties.driver!=driver) {
+          driver = locations[i].properties.driver;
+          polylines.push(linepoints);
+          linepoints = [];
         }
-        // function getDriver(driverId) {
-        //     return "Driver " + driverId;
-        // }
-        function getBubbleName(f) {
-            return "Driver: "+ "<b>" + f.driver_phone+ "</b>" + "<br>" + f.lat + ", " + f.lon + "<br>" + "Event Code: " + f.event_code + "<br>" + f.event_name + "<br>" + new Date(f.timestamp*1000);
-        }
+        linepoints.push([locations[i].geometry.coordinates[1],locations[i].geometry.coordinates[0]]);
+        i++;
+      }
+      polylines.push(linepoints);
+    }
+    console.log(polylines);
+    var colorOptions = ['red','blue','green','yellow'], colorChoice=0;
+    var layer= L.layerGroup(), pline;
+    for (j=0;j<polylines.length;j++) {
+      pline = new L.Polyline(polylines[j], {
+        color: colorOptions[colorChoice],
+        weight: 5,
+        smoothFactor: 10
 
-        function parseResponseJsonData(data) {
-            var items = [];
-            //var events_array = [];
+      });
+      layer.addLayer(pline);
+      colorChoice++;
+      if (colorChoice > 3) {
+        colorChoice = 0;
+      }
+    }
+    console.log(layer);
+    return layer;
+  }
+  // Facilities GeoJSON Layer
+  var events = requestUpdatedJson('/latest_events/86400/'),
+    clonedEvents = _.clone(events),
+    eventsLayer = createEventsLayer(events),
+    vehiclePositions = requestUpdatedJson('/latest_vehicle_locations/600/'),
+    clonedVehiclePositions = _.clone(vehiclePositions),
+    vehiclePositionsLayer = createVehicleDriveLayer(vehiclePositions);
 
-            $.each(data,function(i,f) {
-                var item = {};
-                item.properties = {
-                    name: getBubbleName(f), //getDriver(f.driver),//"Lat: "+f.lat+", Lon: "+f.lon,
-                    event_type: f.event_type,
-                    timestamp: f.timestamp,
-                    driver: f.driver,
-                };
-                item.geometry = {
-                    type: "Point",
-                    coordinates: [f.lon, f.lat]
-                };
-                item.type = "Feature";
-                items.push(item);
+  setInterval(function() {
+    var newEvents = requestUpdatedJson('/latest_events/86400/');
+    if (!(_.isEqual(clonedEvents, newEvents))) {
+      console.log('events have changed');
+      events = newEvents;
+      clonedEvents = _.clone(events);
+      map.removeLayer(eventsLayer);
+      eventsLayer = createEventsLayer(events);
+      eventsLayer.addTo(map);
+    }
+  }, 5000);
 
-              //  events_array.push(f);
-              //  console.log(events_array);
-            });
+  setInterval(function() {
+    var newVehiclePositions = requestUpdatedJson('/latest_vehicle_locations/600/');
+    if (!(_.isEqual(clonedVehiclePositions, newVehiclePositions))) {
+      console.log('vehicle positions have changed');
+      vehiclePositions = newVehiclePositions;
+      clonedVehiclePositions = _.clone(vehiclePositions);
+      map.removeLayer(vehiclePositionsLayer);
+      vehiclePositionsLayer = createVehicleDriveLayer(vehiclePositions);
+      vehiclePositionsLayer.addTo(map);
+    }
+  }, 5000);
 
-            // return the FeatureCollection
-            return { type: "FeatureCollection", features: items };
-        }
-    </script>
+
+  var map = L.map('map', {
+    center: new L.LatLng(-12, 18),
+    zoom: 6,
+    minZoom: 1,
+    maxZoom: 18,
+    layers: [osm,eventsLayer,vehiclePositionsLayer]
+  });
+
+  var baseMaps = {
+    "Map": osm
+  };
+  var overlayMaps = {
+    "Events": eventsLayer,
+    "Vehicle positions": vehiclePositionsLayer,
+  };
+  map.fitBounds(eventsLayer.getBounds());
+  L.control.layers(baseMaps, overlayMaps, {collapsed: false}).addTo(map);
+}
+
+function requestUpdatedJson(apiUrl) {
+  // TODO: Use URL tag to create apiUrl from view name and args
+  //var apiUrl;
+
+  // if (argument) {
+  //     apiUrl = "/rest/"+api+"/?"+argument+"&format=json";
+  // } else {
+  //     apiUrl = "/rest/"+api+"/?format=json";
+  // }
+
+
+  var result;
+  $.ajax({
+           type: 'GET',
+           url: apiUrl,
+           contentType: "application/json; charset=utf-8",
+           dataType: 'json',
+           async: false,
+           success: function(data) {
+             result = parseResponseJsonData(data)
+           },
+           error: function (req, status, error) {
+             //var facilities = JSON.parse($("#facilities").attr("data"));
+             //result = parseResponseJsonData(facilities);
+             alert('Unable to get data: ' + api + ' -  ' + error);
+           }
+         });
+  return result;
+}
+// function getDriver(driverId) {
+//     return "Driver " + driverId;
+// }
+function getBubbleName(f) {
+  return "Driver: "+ "<b>" + f.driver_phone+ "</b>" + "<br>" + f.lat + ", " + f.lon + "<br>" + "Event Code: " + f.event_code + "<br>" + f.event_name + "<br>" + new Date(f.timestamp*1000);
+}
+
+function parseResponseJsonData(data) {
+  var items = [];
+  //var events_array = [];
+
+  $.each(data,function(i,f) {
+    var item = {};
+    item.properties = {
+      name: getBubbleName(f), //getDriver(f.driver),//"Lat: "+f.lat+", Lon: "+f.lon,
+      event_type: f.event_type,
+      timestamp: f.timestamp,
+      driver: f.driver,
+    };
+    item.geometry = {
+      type: "Point",
+      coordinates: [f.lon, f.lat]
+    };
+    item.type = "Feature";
+    items.push(item);
+
+    //  events_array.push(f);
+    //  console.log(events_array);
+  });
+
+  // return the FeatureCollection
+  return { type: "FeatureCollection", features: items };
+}
+</script>
 <script src="/static/js/bootstrap.min.js"></script>
 
 
