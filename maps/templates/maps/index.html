@@ -134,20 +134,21 @@ padding-top: 90px;
                 if (locations.length>0) {
                     var driver = locations[0].properties.driver, i=0 ,linepoints=[];
                     while (i<locations.length) {
-                        console.log(locations[1])
+
                         if (locations[i].properties.driver!=driver) {
-                        // driver_count++;
+                            driver = locations[i].properties.driver;
                             polylines.push(linepoints);
                             linepoints = [];
                         }
-                        linepoints.push(locations[i].geometry);
+                        linepoints.push(locations[i].geometry.coordinates);
+                        i++;
                     }
                     polylines.push(linepoints);
                 }
-
+                console.log(polylines);
                 var layer= L.layerGroup();
                 for (j=0;j<polylines.length;j++) {
-                    layer.addLayer(new L.Polyline(pointList, {
+                    layer.addLayer(new L.Polyline(polylines[i], {
                         color: 'red',
                         weight: 5,
                         smoothFactor: 1
