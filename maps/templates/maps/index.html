@@ -140,21 +140,23 @@ padding-top: 90px;
                             polylines.push(linepoints);
                             linepoints = [];
                         }
-                        linepoints.push(locations[i].geometry.coordinates);
+                        linepoints.push([locations[i].geometry.coordinates[1],locations[i].geometry.coordinates[0]]);
                         i++;
                     }
                     polylines.push(linepoints);
                 }
                 console.log(polylines);
-                var layer= L.layerGroup();
+                var layer= L.layerGroup(), pline;
                 for (j=0;j<polylines.length;j++) {
-                    layer.addLayer(new L.Polyline(polylines[i], {
+                    pline = new L.Polyline(polylines[j], {
                         color: 'red',
                         weight: 5,
                         smoothFactor: 1
 
-                    }));
+                    });
+                    layer.addLayer(pline);
                 }
+                console.log(layer);
                 return layer;
             }
             // Facilities GeoJSON Layer
