@@ -48,7 +48,6 @@ def get_latest_vehicle_locations(request, seconds):
         event = {}
         event['lat'] = f.lat
         event['lon'] = f.lon
-        event['event_type'] = f.event_t_id
         event['timestamp'] = f.timestamp.strftime('%s')
         event['driver'] = f.driver_id
         event['vehicle'] = f.vehicle_id

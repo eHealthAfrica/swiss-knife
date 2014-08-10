@@ -134,12 +134,13 @@ padding-top: 90px;
                 if (locations.length>0) {
                     var driver = locations[0].properties.driver, i=0 ,linepoints=[];
                     while (i<locations.length) {
+                        console.log(locations[1])
                         if (locations[i].properties.driver!=driver) {
                         // driver_count++;
                             polylines.push(linepoints);
                             linepoints = [];
                         }
-                        linepoints.push(locations[i].item.geometry);
+                        linepoints.push(locations[i].geometry);
                     }
                     polylines.push(linepoints);
                 }
