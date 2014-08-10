@@ -1,0 +1,8 @@
+<html>
+<body>
+<h2>Daily reports</h2>
+{% for report in reports %}
+<p>{{report.timestamp}} <a href="{{report.pdf_file.url}}">Download</a></p>
+{% endfor %}
+</body>
+</html>

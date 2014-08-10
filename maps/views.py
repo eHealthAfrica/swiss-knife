@@ -7,6 +7,10 @@ from django.shortcuts import render
 
 from core.models import Event, VehicleLocation
 
+from django.shortcuts import render_to_response
+
+from maps.models import ReportPDF
+
 class DecimalEncoder(json.JSONEncoder):
     def _iterencode(self, o, markers=None):
         if isinstance(o, decimal.Decimal):
@@ -57,3 +61,18 @@ def get_latest_vehicle_locations(request, seconds):
         content_type = 'application/json; charset=utf8',
         status=status
     )
+
+def show_daily_reports(request):
+    response = {}
+    status = 200
+    response['reports'] = ReportPDF.objects.all().order_by('-timestamp')
+    return render_to_response('maps/report_overview.html',
+        response)#,
+        #context_instance=RequestContext(request))
+        
+def dashboard(request):
+    response = {}
+    status = 200
+    response['reports'] = ReportPDF.objects.all().order_by('-timestamp')
+    return render_to_response('maps/index.html',
+        response)        
